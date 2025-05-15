@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Nuevo Cliente</title>
+  </head>
+  <body>
+    <style>
+      /* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.nuevo-cliente {
+  width: 50%;
+  max-width: 900px;
+  background: #ffffff;
+  padding: 24px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 600;
+  color: #000;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.profile-container {
+  margin-bottom: 24px;
+}
+
+.profile-img {
+  width: 150px;
+  height: 150px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.form-container {
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+  display: block;
+  margin-bottom: 8px;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+textarea {
+  height: 100px;
+  resize: none;
+}
+
+.apply-button {
+  background-color: #c41c1c;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.apply-button:hover {
+  background-color: #a31616;
+}
+    </style>
+    <div class="nuevo-cliente">
+      <div class="container">
+        <!-- Header -->
+        <h1 class="title">NUEVO CLIENTE</h1>
+
+        <!-- Imagen del cliente -->
+        <div class="profile-container">
+          <img class="profile-img" src="img/image-7.png" alt="Imagen del cliente" />
+        </div>
+
+        <!-- Campos de formulario -->
+        <form class="form-container">
+          <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Escribe el nombre" required />
+          </div>
+
+          <div class="form-group">
+            <label for="telefono">Teléfono:</label>
+            <input type="tel" id="telefono" name="telefono" placeholder="Escribe el teléfono" required />
+          </div>
+
+          <div class="form-group">
+            <label for="ubicacion">Ubicación:</label>
+            <input type="text" id="ubicacion" name="ubicacion" placeholder="Escribe la ubicación" />
+          </div>
+
+          <div class="form-group">
+            <label for="servicio">Tipo de servicio:</label>
+            <input type="text" id="servicio" name="servicio" placeholder="Escribe el tipo de servicio" />
+          </div>
+
+          <div class="form-group">
+            <label for="descripcion">Descripción del trabajo:</label>
+            <textarea id="descripcion" name="descripcion" placeholder="Escribe la descripción del trabajo"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="fecha">Fecha:</label>
+            <input type="date" id="fecha" name="fecha" required />
+          </div>
+
+          <div class="form-group">
+            <label for="hora">Hora del servicio:</label>
+            <input type="time" id="hora" name="hora" required />
+          </div>
+
+          <!-- Botón -->
+          <button type="submit" class="apply-button">Aplicar</button>
+        </form>
+      </div>
+    </div>
+    <script src="JS/PantallaNuevoCliente.js"></script>
+  </body>
+</html>

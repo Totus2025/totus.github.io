@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis Tareas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #f5f5f5;
+      padding-bottom: 80px; /* Espacio para el footer */
+    }
+
+    h1 {
+      font-size: 24px;
+      color: #c40000;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .task-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .task-card {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 300px;
+      padding: 20px;
+      text-align: left;
+      position: relative;
+    }
+
+    .task-card h2 {
+      font-size: 18px;
+      color: #c40000;
+      margin-bottom: 10px;
+    }
+
+    .task-card p {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 15px;
+      line-height: 1.5;
+      max-height: 45px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .task-card .status {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 8px;
+      color: white;
+      text-transform: uppercase;
+    }
+
+    .status-pending {
+      background-color: #f0ad4e;
+    }
+    .status-accepted {
+      background-color: #5bc0de;
+    }
+    .status-completed {
+      background-color: #5cb85c;
+    }
+
+    .task-card button {
+      background-color: #c40000;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    footer {
+      background-color: #fff;
+      border-top: 1px solid #dee2e6;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 0;
+    }
+
+    footer .nav-item {
+      text-align: center;
+      flex: 1;
+    }
+
+    footer .nav-item a {
+      text-decoration: none;
+      color: #c40000;
+      font-size: 12px;
+    }
+
+    footer .nav-item a:hover {
+      text-decoration: underline;
+    }
+
+    footer .nav-item i {
+      font-size: 18px;
+      color: #c40000;
+    }
+
+    /* Botón de cerrar en el modal */
+    .modal-footer .btn-close-modal {
+      background-color: #b30000;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .modal-footer .btn-close-modal:hover {
+      background-color: #990000;
+    }
+  </style>
+</head>
+<body>
+  <h1>Mis Tareas</h1>
+
+  <!-- Contenedor de las tareas -->
+  <div class="task-container" id="taskContainer">
+    <!-- Las tareas se generarán dinámicamente aquí -->
+  </div>
+
+  <!-- Modal para detalles de la tarea -->
+  <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-danger" id="taskModalLabel">Detalles de la Tarea</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Categoría:</strong> <span id="modalCategory"></span></p>
+          <p><strong>Descripción:</strong> <span id="modalDescription"></span></p>
+          <p><strong>Presupuesto:</strong> <span id="modalBudget"></span></p>
+          <p><strong>Dirección:</strong> <span id="modalAddress"></span></p>
+          <p><strong>Estado:</strong> <span id="modalStatus"></span></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-close-modal" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="nav-item">
+      <a href="home.html">
+        <i class="bi bi-house-door-fill"></i>
+        <div>Inicio</div>
+      </a>
+    </div>
+    <div class="nav-item">
+      <a href="#tareas">
+        <i class="bi bi-check2-circle"></i>
+        <div>Tareas</div>
+      </a>
+    </div>
+    <div class="nav-item">
+      <a href="perfil.html">
+        <i class="bi bi-person-fill"></i>
+        <div>Perfil</div>
+      </a>
+    </div>
+  </footer>
+
+  <script src="JS/Pantallatareas.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
