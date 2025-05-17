@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Formulario Totus</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f8f8f8;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 520px;
+      margin: auto;
+      padding: 0;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .header {
+      background-color: #b30000;
+      padding: 20px;
+      text-align: center;
+      color: white;
+    }
+    .header h1 {
+      margin: 0;
+      font-weight: bold;
+      font-size: 22px;
+    }
+    .form-content {
+      padding: 25px;
+    }
+    h2 {
+      color: #b30000;
+      font-size: 20px;
+      margin-top: 10px;
+      margin-bottom: 15px;
+      font-weight: normal;
+    }
+    label {
+      display: block;
+      margin-top: 14px;
+      font-size: 14px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 13px 15px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-family: 'Poppins', sans-serif;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      background-color: #b30000;
+      color: white;
+      font-weight: bold;
+      padding: 14px;
+      margin-top: 25px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .step {
+      display: none;
+    }
+    .step.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <form id="formTotu">
+      <!-- Pantalla 1 -->
+      <div class="step active" id="step1">
+        <div class="header">
+          <h1>Convertirse en Totus</h1>
+        </div>
+        <div class="form-content">
+          <h2>Información personal</h2>
+
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" name="nombre" required pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" title="Solo letras">
+
+          <label for="apellido">Apellido</label>
+          <input type="text" id="apellido" name="apellido" required pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" title="Solo letras">
+
+          <label for="nacimiento">Fecha de nacimiento</label>
+          <input type="date" id="nacimiento" name="nacimiento" required>
+
+          <label for="dui">DUI</label>
+          <input type="text" id="dui" name="dui" required pattern="\d{8}-\d" title="Formato: 12345678-9">
+
+          <label for="cuenta">Cuenta bancaria</label>
+          <input type="text" id="cuenta" name="cuenta" required pattern="[0-9]+" title="Solo números">
+
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" name="correo" required>
+
+          <label for="telefono">Teléfono</label>
+          <input type="tel" id="telefono" name="telefono" required pattern="[0-9]+" title="Solo números">
+
+          <button type="button" onclick="nextStep()">Siguiente</button>
+        </div>
+      </div>
+
+      <!-- Pantalla 2 -->
+      <div class="step" id="step2">
+        <div class="header">
+          <h1>Convertirse en Totus</h1>
+        </div>
+        <div class="form-content">
+          <h2>Información profesional</h2>
+
+          <label for="especialidad">Especialidad o categoría</label>
+          <input type="text" id="especialidad" name="especialidad" required>
+
+          <label for="experiencia">Descripción de la experiencia</label>
+          <textarea id="experiencia" name="experiencia" rows="4" required></textarea>
+
+          <label for="direccion">Dirección</label>
+          <input type="text" id="direccion" name="direccion" required>
+
+          <label for="horario">Horario de disponibilidad</label>
+          <input type="text" id="horario" name="horario" required>
+
+          <button type="submit">Enviar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    function nextStep() {
+      const step1Inputs = document.querySelectorAll('#step1 input');
+      let valid = true;
+      step1Inputs.forEach(input => {
+        if (!input.checkValidity()) {
+          valid = false;
+        }
+      });
+
+      if (valid) {
+        document.getElementById('step1').classList.remove('active');
+        document.getElementById('step2').classList.add('active');
+        window.scrollTo(0, 0);
+      } else {
+        document.getElementById('formTotu').reportValidity();
+      }
+    }
+
+    document.getElementById('formTotu').addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (this.checkValidity()) {
+        alert('Formulario enviado con éxito.');
+        this.reset();
+        document.getElementById('step2').classList.remove('active');
+        document.getElementById('step1').classList.add('active');
+        window.scrollTo(0, 0);
+      } else {
+        this.reportValidity();
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+
+
