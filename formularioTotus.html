@@ -97,6 +97,8 @@
   </style>
 </head>
 <body>
+  <!-- Alerta bonita -->
+  <div id="formAlertContainer" style="position:fixed;top:25px;left:50%;transform:translateX(-50%);z-index:2000;width:90%;max-width:400px;display:none;"></div>
   <div class="container">
     <form id="formTotu">
       <!-- Pantalla 1 -->
@@ -192,18 +194,36 @@
 
     // Acción para la flecha en la pantalla 1
     function backFromStep1() {
-      // Por defecto
-      window.location = "Home.html";
+      window.location = "Hometotus.html";
+    }
+
+    // Función para mostrar alerta 
+    function showFormAlert(message) {
+      const container = document.getElementById('formAlertContainer');
+      container.innerHTML = `
+        <div class="alert alert-success alert-dismissible fade show" role="alert" style="box-shadow:0 4px 12px rgba(0,0,0,0.13);">
+          <strong>¡Formulario realizado con éxito!</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+      `;
+      container.style.display = "block";
+      setTimeout(() => { container.style.display = "none"; }, 3500);
     }
 
     document.getElementById('formTotu').addEventListener('submit', function(e) {
       e.preventDefault();
       if (this.checkValidity()) {
-        alert('Formulario enviado con éxito.');
+        // MARCA QUE SE DEBE MOSTRAR EL MODAL DE BIENVENIDA EN EL HOME
+        localStorage.setItem('showWelcome', 'true');
+        showFormAlert('Te has convertido en Totus exitosamente.');
         this.reset();
         document.getElementById('step2').classList.remove('active');
         document.getElementById('step1').classList.add('active');
         window.scrollTo(0, 0);
+        // Redirige automáticamente al Home después de mostrar la alerta
+        setTimeout(function() {
+          window.location = "Hometotus.html";
+        }, 1700); // Espera un poco antes de redirigir
       } else {
         this.reportValidity();
       }
