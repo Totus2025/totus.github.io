@@ -1,5 +1,4 @@
-const JSONBIN_BIN_ID = '682a68838960c979a79c6d65'; // ID 
-  
+  const JSONBIN_BIN_ID = '682a68838960c979a79c6d65'; // ID 
     const JSONBIN_API_KEY = '$2a$10$CT888X18GRmHBcV11efmxe.3Q1SsEppgTzBpNcboYWuNuKZGQR/P6';
     const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_servicios}`;
     const JSONBIN_HEADERS = {
