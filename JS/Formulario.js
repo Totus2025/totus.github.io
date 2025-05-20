@@ -42,6 +42,8 @@
       const descripcion = document.getElementById("descripcion").value;
       const presupuesto = document.getElementById("presupuesto").value;
       const direccion = document.getElementById("direccion").value;
+      const clienteId = document.getElementById("id_cliente").value;
+const trabajadorId = document.getElementById("id_trabajador").value; // Estará vacío al principio
 
       if (!categoria || !descripcion || !presupuesto || !direccion || !lat || !lon) {
         alert("Por favor, completa todos los campos y obtén la ubicación.");
@@ -49,16 +51,18 @@
       }
 
       // Objeto corregido - usando las variables locales
-      const servicio = {
-        categoria: categoria,
-        descripcion: descripcion,
-        presupuesto: presupuesto,
-        direccion: direccion,
-        latitud: lat,
-        longitud: lon,
-        fecha: new Date().toISOString()
-      };
-
+     const servicio = {
+  id: "sv" + Date.now(), // Genera un ID único para la tarea
+  categoria: categoria,
+  descripcion: descripcion,
+  presupuesto: presupuesto,
+  direccion: direccion,
+  latitud: lat,
+  longitud: lon,
+  fecha: new Date().toISOString(),
+  cliente_id: clienteId,
+  trabajador_id: trabajadorId || null // aún no hay trabajador asignado
+};
       try {
         // 1. Primero obtenemos los datos existentes
         const responseGet = await fetch(JSONBIN_URL + '/latest', {
