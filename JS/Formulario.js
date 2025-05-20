@@ -2,6 +2,7 @@
     // --- CONSTANTES BIN ---
 const JSONBIN_BIN_ID = '6816d5668a456b79669734d8'; // Para inicio sesión (no cambia)
 const JSONBIN_BIN_TRABAJADORES = '682208248960c979a597f8fb'; // Trabajadores y servicios
+const JSONBIN_BIN_SERVICIOS = '682c98548a456b7966a1f271'; // SERVICIOS
 const JSONBIN_BIN_NOTIFICACIONES = '682bc22b8960c979a59d37f4'; // Notificaciones
 
 const JSONBIN_API_KEY = '$2a$10$CT888X18GRmHBcV11efmxe.3Q1SsEppgTzBpNcboYWuNuKZGQR/P6';
