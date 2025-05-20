@@ -1,67 +1,73 @@
+const JSONBIN_BIN_ID = 'TU_BIN_ID'; // Reemplaza con el tuyo
+const JSONBIN_API_KEY = 'TU_API_KEY'; // Reemplaza con el tuyo
 
-    // Estos son solo ejemplos de datos de tareas (esto se obtendría del localStorage o base de datos o donde lo hizo Daniel )
-    const tasks = [
-      {
-        categoria: "Mantenimiento",
-        descripcion: "Reparar el grifo que está goteando en la cocina. Necesito que sea rápido.",
-        presupuesto: "$50",
-        direccion: "Calle Falsa 123, Ciudad",
-        estado: "Pendiente"
-      },
-      {
-        categoria: "Belleza",
-        descripcion: "Maquillaje para una boda, debe ser profesional y durar todo el día.",
-        presupuesto: "$100",
-        direccion: "Av. Siempre Viva 456, Ciudad",
-        estado: "Aceptada"
-      },
-      {
-        categoria: "Doméstico",
-        descripcion: "Limpieza profunda del departamento. Incluye cocina, baño y sala.",
-        presupuesto: "$80",
-        direccion: "Calle Luna 789, Ciudad",
-        estado: "Completada"
+const cliente = JSON.parse(localStorage.getItem('clienteActivo'));
+if (!cliente || !cliente.correo) {
+  alert('No hay un cliente activo. Inicia sesión primero.');
+  // window.location.href = 'login.html'; // opcional
+}
+
+const taskContainer = document.getElementById("taskContainer");
+
+async function cargarTareasDelCliente() {
+  try {
+    const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
+      headers: {
+        'X-Master-Key': JSONBIN_API_KEY
       }
-    ];
+    });
 
-    const taskContainer = document.getElementById("taskContainer");
+    if (!res.ok) throw new Error("No se pudieron cargar las tareas");
 
-    // Generar las tareas en la pantalla
-    function renderTasks() {
-      taskContainer.innerHTML = ""; // Limpiar contenido previo
+    const data = await res.json();
+    const todasLasTareas = Array.isArray(data.record) ? data.record : [];
 
-      tasks.forEach((task, index) => {
-        const statusClass =
-          task.estado === "Pendiente"
-            ? "status-pending"
-            : task.estado === "Aceptada"
-            ? "status-accepted"
-            : task.estado === "Completada"
-            ? "status-completed"
-            : "";
+    // Filtrar solo tareas del cliente actual
+    const tareasDelCliente = todasLasTareas.filter(t => t.clienteCorreo === cliente.correo);
 
-        const taskCard = `
-          <div class="task-card">
-            <span class="status ${statusClass}">${task.estado}</span>
-            <h2>${task.categoria}</h2>
-            <p>${task.descripcion.slice(0, 60)}...</p>
-            <button class="btn btn-danger btn-sm" onclick="showModal(${index})" data-bs-toggle="modal" data-bs-target="#taskModal">Leer más</button>
-          </div>
-        `;
+    renderTasks(tareasDelCliente);
 
-        taskContainer.innerHTML += taskCard;
-      });
-    }
+  } catch (error) {
+    console.error('Error al cargar las tareas:', error);
+    taskContainer.innerHTML = `<p>Error al cargar tus tareas.</p>`;
+  }
+}
 
-    // Mostrar modal con detalles de la tarea
-    function showModal(index) {
-      const task = tasks[index];
-      document.getElementById("modalCategory").textContent = task.categoria;
-      document.getElementById("modalDescription").textContent = task.descripcion;
-      document.getElementById("modalBudget").textContent = task.presupuesto;
-      document.getElementById("modalAddress").textContent = task.direccion;
-      document.getElementById("modalStatus").textContent = task.estado;
-    }
+function renderTasks(tareas) {
+  taskContainer.innerHTML = "";
 
-    // Renderizar las tareas al cargar la página
-    renderTasks();
+  if (tareas.length === 0) {
+    taskContainer.innerHTML = `<p>No tienes tareas registradas.</p>`;
+    return;
+  }
+
+  tareas.forEach((task, index) => {
+    const statusClass =
+      task.estado === "Pendiente"
+        ? "status-pending"
+        : task.estado === "Aceptada"
+        ? "status-accepted"
+        : task.estado === "Completada"
+        ? "status-completed"
+        : "";
+
+    const taskCard = `
+      <div class="task-card">
+        <span class="status ${statusClass}">${task.estado}</span>
+        <h2>${task.categoria}</h2>
+        <p>${task.descripcion.slice(0, 60)}...</p>
+        <button class="btn btn-danger btn-sm" onclick="showModal(${index})" data-bs-toggle="modal" data-bs-target="#taskModal">Leer más</button>
+      </div>
+    `;
+
+    taskContainer.innerHTML += taskCard;
+  });
+}
+
+// Opcional: mostrar modal con detalles
+function showModal(index) {
+  // Usar `tareasDelCliente[index]` en este caso, puedes almacenarlo en una variable global si necesitas
+}
+
+// Ejecutar al cargar
+cargarTareasDelCliente();
