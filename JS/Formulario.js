@@ -1,12 +1,11 @@
-
-    // --- CONSTANTES BIN ---
-const JSONBIN_BIN_ID = '6816d5668a456b79669734d8'; // Para inicio sesión (no cambia)
+// --- CONSTANTES BIN ---
+const JSONBIN_BIN_SERVICIOS = '6816d5668a456b79669734d8'; // <--- Usa aquí el ID real de tu bin de servicios
 const JSONBIN_BIN_TRABAJADORES = '682208248960c979a597f8fb'; // Trabajadores y servicios
 const JSONBIN_BIN_NOTIFICACIONES = '682bc22b8960c979a59d37f4'; // Notificaciones
 
 const JSONBIN_API_KEY = '$2a$10$CT888X18GRmHBcV11efmxe.3Q1SsEppgTzBpNcboYWuNuKZGQR/P6';
 
-const JSONBIN_URL_SERVICIOS = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_servicios}`;
+const JSONBIN_URL_SERVICIOS = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_SERVICIOS}`;
 const JSONBIN_URL_TRABAJADORES = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_TRABAJADORES}`;
 const JSONBIN_URL_NOTIFICACIONES = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_NOTIFICACIONES}`;
 
@@ -28,6 +27,11 @@ function obtenerUbicacion() {
   const ubicacionDiv = document.getElementById("ubicacion-actual");
   const mapa = document.getElementById("mapa");
 
+  if (!ubicacionDiv || !mapa) {
+    console.error("No se encontró el elemento 'ubicacion-actual' o 'mapa' en el HTML.");
+    return;
+  }
+
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       function (position) {
@@ -40,10 +44,12 @@ function obtenerUbicacion() {
       },
       function () {
         ubicacionDiv.textContent = "No se pudo obtener la ubicación.";
+        mapa.style.display = "none";
       }
     );
   } else {
     ubicacionDiv.textContent = "Geolocalización no soportada.";
+    mapa.style.display = "none";
   }
 }
 
@@ -54,31 +60,29 @@ async function publicarServicio() {
   const presupuesto = document.getElementById("presupuesto").value;
   const direccion = document.getElementById("direccion").value;
 
-  if (!categoria || !descripcion || !presupuesto || !direccion || !lat || !lon) {
+
+  if (!categoria || !descripcion || !presupuesto || !direccion || lat === null || lon === null) {
     alert("Por favor, completa todos los campos y obtén la ubicación.");
     return;
   }
 
-  // Obtener ID del cliente (asumiendo que está guardado en localStorage)
+  // Obtener ID del cliente 
   const usuarioActual = JSON.parse(localStorage.getItem('totusCurrentUser'));
   const clienteID = usuarioActual?.id || generarId('cliente_');
 
   // Crear objeto servicio con ID único
-  const clienteId = JSON.parse(localStorage.getItem(LOCAL_STORAGE_SESSION_KEY)).userId;
-
-const servicio = {
-  id: generarId('sv_'),
-  categoria: categoria,
-  descripcion: descripcion,
-  presupuesto: presupuesto,
-  direccion: direccion,
-  latitud: lat,
-  longitud: lon,
-  fecha: new Date().toISOString(),
-  cliente_id: clienteId,
-  trabajador_id: null  // aún no asignado
-};
-
+  const servicio = {
+    id: generarId('sv_'),
+    categoria: categoria,
+    descripcion: descripcion,
+    presupuesto: presupuesto,
+    direccion: direccion,
+    latitud: lat,
+    longitud: lon,
+    fecha: new Date().toISOString(),
+    cliente_id: clienteID,
+    trabajador_id: null  // aún no asignado
+  };
 
   try {
     // 1. Obtener servicios existentes
@@ -113,6 +117,8 @@ const servicio = {
       document.getElementById("ubicacion-actual").textContent = "";
       document.getElementById("mapa").innerHTML = "";
       document.getElementById("mapa").style.display = "none";
+      lat = null;
+      lon = null;
 
       // Redirigir al historial o pantalla deseada
       window.location.href = "PantallaTareas.html";
