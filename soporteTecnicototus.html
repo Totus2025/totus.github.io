@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Soporte Técnico - TOTUS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+    .top-bar {
+      background-color: #b30000;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .container {
+      background-color: #fff;
+      padding: 1.5rem;
+      margin: 1.5rem auto;
+      max-width: 500px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      color: #333;
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 20px;
+    }
+    p {
+      font-size: 14px;
+      color: #444;
+      line-height: 1.6;
+    }
+    .highlight {
+      color: #b30000;
+      font-weight: 600;
+      word-break: break-word;
+    }
+    .section-title {
+      margin-top: 2rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      font-size: 16px;
+      color: #222;
+      text-align: center;
+    }
+    a {
+      color: #b30000;
+      text-decoration: none;
+      word-break: break-word;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    /* Flecha fija blanca */
+    .white-arrow {
+      position: fixed;
+      top: 18px;
+      left: 18px;
+      z-index: 1000;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      /* Sin animaciones, sin movimiento */
+    }
+    .white-arrow svg {
+      width: 34px;
+      height: 34px;
+      display: block;
+    }
+    @media (max-width: 600px) {
+      .container {
+        margin: 1rem;
+        padding: 1.2rem;
+      }
+      .top-bar {
+        font-size: 16px;
+      }
+      .white-arrow {
+        top: 8px;
+        left: 8px;
+      }
+      .white-arrow svg {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Flecha blanca SVG fija -->
+  <button class="white-arrow" onclick="location.href='perfil.html'" aria-label="Regresar al perfil">
+    <svg viewBox="0 0 32 32">
+      <polyline points="20,6 12,16 20,26" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <div class="top-bar">Centro de Ayuda TOTUS</div>
+  <div class="container">
+    <h2>SOPORTE TÉCNICO</h2>
+    <p>¿Necesitas resolver una duda sobre nuestros servicios o cómo convertirte en TOTUS? Nuestro equipo de soporte técnico está listo para ayudarte.</p>
+    <p>Correo: <span class="highlight">totussoportetecnico@gmail.com</span></p>
+    <p>Teléfono: <span class="highlight">79462937</span></p>
+    <div class="section-title">POLÍTICAS Y TÉRMINOS</div>
+    <p>Términos y condiciones léelas aquí:</p>
+    <p><a href="https://www.totus.com.sv/terminosycondiones" target="_blank">www.totus.com.sv/terminosycondiones</a></p>
+    <p>Política de privacidad. Aquí te explicamos cómo protegemos y usamos tu información:</p>
+    <p><a href="https://www.totus.com.sv/privacidadydatos" target="_blank">www.totus.com.sv/privacidadydatos</a></p>
+    <p>¿Tienes dudas sobre nuestras políticas? Contácta a uno de nuestros asociados de servicio al cliente:</p>
+    <p><span class="highlight">totussoportetecnico@gmail.com</span></p>
+  </div>
+</body>
+</html>
