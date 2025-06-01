@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis datos personales</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: auto;
+      background-color: white;
+      height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .back-arrow {
+      font-size: 24px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 2px solid #c8102e; /* Color personalizado */
+      border-radius: 8px;
+      box-sizing: border-box;
+      outline: none;
+      font-family: monospace;
+      background-color: transparent; /* Sin relleno */
+    }
+
+    .btn {
+      width: 140px; /* Botón más grande */
+      background-color: #c8102e;
+      color: white;
+      border: none;
+      padding: 15px; /* Mayor espacio */
+      border-radius: 8px; /* Bordes más suaves */
+      margin: 30px auto; /* Centrado */
+      cursor: pointer;
+      display: block; /* Asegura alineación */
+      font-size: 17px; /* Fuente más grande */
+      font-weight: bold; /* Texto en negrita */
+    }
+
+    .btn:hover {
+      background-color: #a00e26;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <span class="back-arrow" onclick="goBack()">←</span> <!-- Aquí ya está la funcionalidad -->
+      <span class="title">Mis datos personales</span>
+    </div>
+
+    <label for="nombre">Nombre (s)</label>
+    <input type="text" id="nombre" placeholder="">
+
+    <label for="apellido">Apellido (s)</label>
+    <input type="text" id="apellido" placeholder="">
+
+    <label for="tarjeta">Tarjeta</label>
+    <input type="text" id="tarjeta" inputmode="numeric" maxlength="16" placeholder="************1234" oninput="maskInput(event)">
+
+    <label for="fecha">Fecha de nacimiento</label>
+    <input type="text" id="fecha" placeholder="DD/MM/AAAA" oninput="formatDate(event)">
+    
+    <button class="btn" onclick="enviar()">Listo</button>
+  </div>
+
+  <script>
+    function goBack() {
+        window.history.back(); // Regresa a la página anterior
+    }
+
+    function maskInput(event) {
+        let input = event.target;
+        let rawValue = input.dataset.raw || ""; // Almacenamos el valor sin máscara
+        let newChar = event.data || ""; // Capturamos la última entrada
+        
+        if (/^\d$/.test(newChar) && rawValue.length < 16) {
+            rawValue += newChar; // Añadimos solo números
+        } else if (event.inputType === "deleteContentBackward") {
+            rawValue = rawValue.slice(0, -1); // Eliminamos el último carácter en caso de borrar
+        }
+
+        input.dataset.raw = rawValue; // Guardamos el valor real sin modificar
+        input.value = rawValue.length >= 12 ? "************" + rawValue.slice(-4) : rawValue;
+    }
+
+    function formatDate(event) {
+        let input = event.target;
+        let value = input.value.replace(/\D/g, "").slice(0, 8); // Solo números y máximo 8 caracteres
+
+        if (value.length >= 4) {
+            value = value.slice(0, 2) + "/" + value.slice(2, 4) + "/" + value.slice(4);
+        } else if (value.length >= 2) {
+            value = value.slice(0, 2) + "/" + value.slice(2);
+        }
+
+        input.value = value;
+    }
+
+    function enviar() {
+        let nombre = document.getElementById("nombre").value;
+        let apellido = document.getElementById("apellido").value;
+        let tarjeta = document.getElementById("tarjeta").dataset.raw || "";
+        let fecha = document.getElementById("fecha").value;
+
+        if (!nombre || !apellido || tarjeta.length !== 16 || !fecha.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+            alert("Por favor, completa todos los campos correctamente.");
+            return;
+        }
+
+        console.log("Nombre:", nombre);
+        console.log("Apellido:", apellido);
+        console.log("Tarjeta:", tarjeta);
+        console.log("Fecha de nacimiento:", fecha);
+
+        alert("Datos enviados correctamente.");
+    }
+  </script>
+</body>
+</html>
