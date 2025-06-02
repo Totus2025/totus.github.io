@@ -1,4 +1,4 @@
- // SPLASH DE BIENVENIDA
+// SPLASH DE BIENVENIDA
     const splash = document.getElementById('splash');
     const mainContainer = document.getElementById('mainContainer');
     // Al cargar la página, mostrar splash y luego el login
@@ -35,7 +35,7 @@
     const registerAlert = document.getElementById('registerAlert');
 
     function generateUserId() {
-      return 'user_' + Math.random().toString(36).substr(2, 9);
+      return 'cliente_' + Math.random().toString(36).substr(2, 9);
     }
 
     showRegister.addEventListener('click', () => {
