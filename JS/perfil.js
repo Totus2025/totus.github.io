@@ -1,61 +1,54 @@
-document.addEventListener('DOMContentLoaded', async () => {
-      const LOCAL_STORAGE_SESSION_KEY = 'totusCurrentUser';
-      const userData = localStorage.getItem(LOCAL_STORAGE_SESSION_KEY);
+document.addEventListener('DOMContentLoaded', () => {
+  const LOCAL_STORAGE_SESSION_KEY = 'totusCurrentUser';
+  const userData = localStorage.getItem(LOCAL_STORAGE_SESSION_KEY);
 
-      // Verificar si hay sesión activa
-      if (!userData) {
-        window.location.href = "login.html"; // Redirigir al login si no hay sesión
-        return;
-      }
+  if (!userData) {
+    window.location.href = "login.html";
+    return;
+  }
 
-      const session = JSON.parse(userData);
+  const session = JSON.parse(userData);
+  document.getElementById('userEmail').textContent = session.email || "";
 
-      // Mostrar el correo del usuario
-      const userEmailElement = document.getElementById('userEmail');
-      userEmailElement.textContent = session.email;
+  const profilePictureElement = document.getElementById('profilePicture');
 
-      // Mostrar la foto de perfil guardada
-      const profilePictureElement = document.getElementById('profilePicture');
-      if (session.profilePicture) {
-        profilePictureElement.src = session.profilePicture;
-      }
+  // Cargar foto de perfil guardada en localStorage (si existe)
+  if (session.profilePicture) {
+    profilePictureElement.src = session.profilePicture;
+  }
 
-      // Manejar la subida de nueva foto de perfil
-      document.getElementById('uploadImage').addEventListener('change', function (event) {
-        const file = event.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            profilePictureElement.src = e.target.result;
+  // Manejar la subida de nueva foto de perfil (como base64)
+  document.getElementById('uploadImage').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
 
-            // Guardar la nueva foto en localStorage
-            session.profilePicture = e.target.result;
-            localStorage.setItem(LOCAL_STORAGE_SESSION_KEY, JSON.stringify(session));
-          };
-          reader.readAsDataURL(file);
-        }
-      });
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const imageUrl = e.target.result;
+      profilePictureElement.src = imageUrl;
+      session.profilePicture = imageUrl;
+      localStorage.setItem(LOCAL_STORAGE_SESSION_KEY, JSON.stringify(session));
+    };
+    reader.readAsDataURL(file);
+  });
 
-      // Funcionalidad del modal y cerrar sesión
-      const logoutLink = document.getElementById('logoutLink');
-      const confirmationModal = document.getElementById('confirmationModal');
-      const confirmLogout = document.getElementById('confirmLogout');
-      const cancelLogout = document.getElementById('cancelLogout');
+  // Modal de cerrar sesión igual que ya tienes
+  const logoutLink = document.getElementById('logoutLink');
+  const confirmationModal = document.getElementById('confirmationModal');
+  const confirmLogout = document.getElementById('confirmLogout');
+  const cancelLogout = document.getElementById('cancelLogout');
 
-      // Mostrar el modal al hacer clic en "Cerrar sesión"
-      logoutLink.addEventListener('click', function (event) {
-        event.preventDefault();
-        confirmationModal.style.display = 'block';
-      });
+  logoutLink.addEventListener('click', function(event) {
+    event.preventDefault();
+    confirmationModal.style.display = 'block';
+  });
 
-      // Confirmar cierre de sesión
-      confirmLogout.addEventListener('click', function () {
-        localStorage.removeItem(LOCAL_STORAGE_SESSION_KEY);
-        window.location.href = "login.html";
-      });
+  confirmLogout.addEventListener('click', function() {
+    localStorage.removeItem(LOCAL_STORAGE_SESSION_KEY);
+    window.location.href = "login.html";
+  });
 
-      // Cancelar cierre de sesión
-      cancelLogout.addEventListener('click', function () {
-        confirmationModal.style.display = 'none';
-      });
-    });
+  cancelLogout.addEventListener('click', function() {
+    confirmationModal.style.display = 'none';
+  });
+});
