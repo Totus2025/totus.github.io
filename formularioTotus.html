@@ -128,6 +128,8 @@
 
           <label for="telefono">Teléfono</label>
           <input type="tel" id="telefono" name="telefono" required pattern="[0-9]+" title="Solo números">
+          <label for="tarjeta">Tarjeta</label>
+          <input type="text" id="tarjeta" inputmode="numeric" maxlength="16" placeholder="******1234" oninput="maskInput(event)">
 
           <button type="button" onclick="nextStep()">Siguiente</button>
         </div>
