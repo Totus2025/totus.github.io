@@ -10,7 +10,6 @@
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
     }
-
     .container {
       max-width: 400px;
       margin: auto;
@@ -20,7 +19,6 @@
       box-sizing: border-box;
       border: 1px solid #ccc;
     }
-
     .header {
       display: flex;
       align-items: center;
@@ -28,25 +26,21 @@
       padding-bottom: 10px;
       margin-bottom: 20px;
     }
-
     .back-arrow {
       font-size: 24px;
       cursor: pointer;
       margin-right: 10px;
     }
-
     .title {
       font-size: 18px;
       font-weight: bold;
     }
-
     label {
       display: block;
       margin-top: 10px;
       font-weight: bold;
       font-size: 14px;
     }
-
     input {
       width: 100%;
       padding: 10px;
@@ -58,7 +52,6 @@
       font-family: monospace;
       background-color: transparent;
     }
-
     .btn {
       width: 140px;
       background-color: #c8102e;
@@ -72,12 +65,9 @@
       font-size: 17px;
       font-weight: bold;
     }
-
     .btn:hover {
       background-color: #a00e26;
     }
-
-    /* Estilos para la alerta personalizada */
     .custom-alert-overlay {
       position: fixed;
       top: 0; left: 0;
@@ -151,8 +141,6 @@
     .custom-alert-error .custom-alert-icon {
       color: #c8102e;
     }
-
-    /* Resumen */
     #resumen {
       max-width: 400px;
       margin: auto;
@@ -164,15 +152,31 @@
       box-shadow: 0 2px 16px rgba(0,0,0,0.04);
       display: none;
       animation: popIn 0.25s cubic-bezier(.68,-0.55,.27,1.55);
+      position: relative;
     }
     #resumen h2 {
-      color: #21aa58;
+      color: #c8102e;
       text-align: center;
       margin-bottom: 24px;
     }
     #resumen p {
       font-size: 16px;
       margin: 12px 0;
+    }
+    .resumen-back-arrow {
+      position: absolute;
+      left: 16px;
+      top: 18px;
+      font-size: 28px;
+      color: #c8102e;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.18s;
+      z-index: 10;
+    }
+    .resumen-back-arrow:hover {
+      color: #a00e26;
     }
   </style>
 </head>
@@ -182,44 +186,41 @@
       <span class="back-arrow" onclick="goBack()">←</span>
       <span class="title">Mis datos personales</span>
     </div>
-
     <label for="nombre">Nombre (s)</label>
     <input type="text" id="nombre" placeholder="">
-
     <label for="apellido">Apellido (s)</label>
     <input type="text" id="apellido" placeholder="">
-
     <label for="tarjeta">Tarjeta</label>
     <input type="text" id="tarjeta" inputmode="numeric" maxlength="16" placeholder="************1234" oninput="maskInput(event)">
-
     <label for="fecha">Fecha de nacimiento</label>
     <input type="text" id="fecha" placeholder="DD/MM/AAAA" oninput="formatDate(event)">
-    
     <button class="btn" onclick="enviar()">Listo</button>
   </div>
-
-  <!-- Resumen oculto inicialmente -->
   <div id="resumen">
-    <h2>¡Datos enviados!</h2>
+    <button class="resumen-back-arrow" onclick="location.href='perfil.html'" aria-label="Regresar al perfil">←</button>
+    <h2>Información Personal</h2>
     <p><b>Nombre(s):</b> <span id="resNombre"></span></p>
     <p><b>Apellido(s):</b> <span id="resApellido"></span></p>
     <p><b>Tarjeta:</b> <span id="resTarjeta"></span></p>
     <p><b>Fecha de nacimiento:</b> <span id="resFecha"></span></p>
   </div>
-
-  <!-- Alerta personalizada -->
   <div id="customAlert" style="display:none;"></div>
-
   <script>
+    // Mostrar solo el resumen si los datos existen
+    window.onload = function() {
+      const datos = JSON.parse(localStorage.getItem('datosPersonales'));
+      if (datos && datos.nombre && datos.apellido && datos.tarjeta && datos.fecha) {
+        document.getElementById("formulario").style.display = "none";
+        mostrarResumen(datos);
+      }
+    };
     function goBack() {
         window.history.back();
     }
-
     function maskInput(event) {
         let input = event.target;
         let rawValue = input.dataset.raw || "";
         let newChar = event.data || "";
-        
         if (/^\d$/.test(newChar) && rawValue.length < 16) {
             rawValue += newChar;
         } else if (event.inputType === "deleteContentBackward") {
@@ -228,7 +229,6 @@
         input.dataset.raw = rawValue;
         input.value = rawValue.length >= 16 ? "************" + rawValue.slice(-4) : rawValue;
     }
-
     function formatDate(event) {
         let input = event.target;
         let value = input.value.replace(/\D/g, "").slice(0, 8);
@@ -239,7 +239,6 @@
         }
         input.value = value;
     }
-
     function customAlert({title, message, type = 'error', buttonText = 'Aceptar', onClose}) {
       const overlay = document.getElementById('customAlert');
       overlay.innerHTML = `
@@ -260,13 +259,11 @@
         if (typeof onClose === "function") onClose();
       }
     }
-
     function enviar() {
       let nombre = document.getElementById("nombre").value.trim();
       let apellido = document.getElementById("apellido").value.trim();
       let tarjeta = document.getElementById("tarjeta").dataset.raw || "";
       let fecha = document.getElementById("fecha").value.trim();
-
       if (!nombre || !apellido) {
         customAlert({
           title: "Campos obligatorios",
@@ -291,13 +288,22 @@
         });
         return;
       }
-
+      // Guardar en localStorage
+      localStorage.setItem('datosPersonales', JSON.stringify({
+        nombre,
+        apellido,
+        tarjeta,
+        fecha
+      }));
       // Mostrar información y ocultar formulario
       document.getElementById("formulario").style.display = "none";
-      document.getElementById("resNombre").innerText = nombre;
-      document.getElementById("resApellido").innerText = apellido;
-      document.getElementById("resTarjeta").innerText = "************" + tarjeta.slice(-4);
-      document.getElementById("resFecha").innerText = fecha;
+      mostrarResumen({ nombre, apellido, tarjeta, fecha });
+    }
+    function mostrarResumen(datos) {
+      document.getElementById("resNombre").innerText = datos.nombre;
+      document.getElementById("resApellido").innerText = datos.apellido;
+      document.getElementById("resTarjeta").innerText = "************" + datos.tarjeta.slice(-4);
+      document.getElementById("resFecha").innerText = datos.fecha;
       document.getElementById("resumen").style.display = "block";
     }
   </script>
