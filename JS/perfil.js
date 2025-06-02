@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     profilePictureElement.src = session.profilePicture;
   }
 
-  // Manejar la subida de nueva foto de perfil (como base64)
+  // Manejar la subida de nueva foto de perfil 
   document.getElementById('uploadImage').addEventListener('change', function(event) {
     const file = event.target.files[0];
     if (!file) return;
