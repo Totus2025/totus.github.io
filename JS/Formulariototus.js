@@ -26,7 +26,7 @@ function prevStep() {
 }
 
 function backFromStep1() {
-  window.location = "Hometotus.html";
+  window.location = "perfil.html";
 }
 
 // Alerta para mostrar cuando el formulario se envía correctamente

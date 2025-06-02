@@ -117,7 +117,7 @@
         }
 
         input.dataset.raw = rawValue; // Guardamos el valor real sin modificar
-        input.value = rawValue.length >= 12 ? "************" + rawValue.slice(-4) : rawValue;
+        input.value = rawValue.length >= 16 ? "************" + rawValue.slice(-4) : rawValue;
     }
 
     function formatDate(event) {
@@ -134,23 +134,31 @@
     }
 
     function enviar() {
-        let nombre = document.getElementById("nombre").value;
-        let apellido = document.getElementById("apellido").value;
-        let tarjeta = document.getElementById("tarjeta").dataset.raw || "";
-        let fecha = document.getElementById("fecha").value;
+    let nombre = document.getElementById("nombre").value.trim();
+    let apellido = document.getElementById("apellido").value.trim();
+    let tarjeta = document.getElementById("tarjeta").dataset.raw || "";
+    let fecha = document.getElementById("fecha").value.trim();
 
-        if (!nombre || !apellido || tarjeta.length !== 16 || !fecha.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
-            alert("Por favor, completa todos los campos correctamente.");
-            return;
-        }
-
-        console.log("Nombre:", nombre);
-        console.log("Apellido:", apellido);
-        console.log("Tarjeta:", tarjeta);
-        console.log("Fecha de nacimiento:", fecha);
-
-        alert("Datos enviados correctamente.");
+    // Validación mejorada
+    if (!nombre || !apellido) {
+        alert("Nombre y apellido son obligatorios.");
+        return;
     }
+
+    if (tarjeta.length !== 16 || !/^\d+$/.test(tarjeta)) {
+        alert("La tarjeta debe tener 16 dígitos.");
+        return;
+    }
+
+    if (!fecha.match(/^\d{1,2}\/\d{1,2}\/\d{4}$/)) {
+        alert("Formato de fecha inválido. Usa DD/MM/AAAA.");
+        return;
+    }
+
+    console.log("Datos enviados:", { nombre, apellido, tarjeta, fecha });
+    alert("Datos enviados correctamente.");
+}
+    
   </script>
 </body>
 </html>
