@@ -1,4 +1,3 @@
-
 // --- CONSTANTES BIN ---
 const JSONBIN_BIN_SERVICIOS = '682c98548a456b7966a1f271'; // SERVICIOS
 const JSONBIN_BIN_TRABAJADORES = '682208248960c979a597f8fb'; // Trabajadores y servicios
@@ -69,7 +68,7 @@ async function publicarServicio() {
 
   // Obtener ID del cliente 
   const usuarioActual = JSON.parse(localStorage.getItem('totusCurrentUser'));
-  const clienteID = usuarioActual?.id || generarId('cliente_');
+  const clienteID = usuarioActual?.userId; // <-- usa userId, no id ni generarId
 
   // Crear objeto servicio con ID único
   const servicio = {
@@ -81,7 +80,7 @@ async function publicarServicio() {
     latitud: lat,
     longitud: lon,
     fecha: new Date().toISOString(),
-    cliente_id: clienteID,
+    cliente_id: clienteID, // <-- aquí va el userId del usuario logueado
     trabajador_id: null  // aún no asignado
   };
 
