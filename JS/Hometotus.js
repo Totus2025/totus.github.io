@@ -23,10 +23,23 @@ async function cargarServiciosDelUsuario() {
     const data = await response.json();
     const todasLasTareas = data.record?.servicios || [];
 
-    // Filtrar tareas por coincidencia de categoría (sin tildes)
+    // Filtrar tareas aceptadas
+    const tareasAceptadas = usuarioActual?.tareasAceptadas || [];
+    const uidsAceptadas = new Set(tareasAceptadas.map(t => t.uid));
+
+    // Filtrar tareas por coincidencia de categoría y que no estén aceptadas
     const tareasCoincidentes = todasLasTareas.filter(task => {
       const categoriaTarea = quitarTildes((task.categoria || '').trim().toLowerCase());
-      return categoriaTarea === categoriaPrincipal || trabajosExtra.includes(categoriaTarea);
+      const uid = (
+        (task.categoria || '') +
+        (task.descripcion || '') +
+        (task.direccion || '') +
+        (task.presupuesto || '')
+      ).replace(/\s+/g, '');
+      return (
+        (categoriaTarea === categoriaPrincipal || trabajosExtra.includes(categoriaTarea)) &&
+        !uidsAceptadas.has(uid)
+      );
     });
 
     // Renderizar
@@ -34,19 +47,68 @@ async function cargarServiciosDelUsuario() {
     if (homeContainer) {
       homeContainer.innerHTML = tareasCoincidentes.length === 0
         ? "<p>No hay tareas que coincidan con tu perfil.</p>"
-        : tareasCoincidentes.map((task) => `
-    <div class="task-card">
-      <span class="status" data-status="${task.estado || 'Pendiente'}">${task.estado || 'Pendiente'}</span>
-      <h2>${task.categoria}</h2>
-      <p><strong>Descripción:</strong> ${task.descripcion}</p>
-      <p><strong>Dirección:</strong> ${task.direccion || 'No especificada'}</p>
-      <p><strong>Presupuesto:</strong> $${task.presupuesto || '0'}</p>
-    </div>
-  `).join('');
+        : tareasCoincidentes.map((task) => {
+    const uid = (
+      (task.categoria || '') +
+      (task.descripcion || '') +
+      (task.direccion || '') +
+      (task.presupuesto || '')
+    ).replace(/\s+/g, '');
+    return `
+  <div class="task-card">
+    ${
+      (task.estado || 'Pendiente') === 'Pendiente'
+        ? `<button class="status-btn-aceptar" data-uid="${uid}">Aceptar pedido</button>`
+        : `<span class="status" data-status="${task.estado || 'Pendiente'}">${task.estado || 'Pendiente'}</span>`
+    }
+    <h2>${task.categoria}</h2>
+    <p><strong>Descripción:</strong> ${task.descripcion}</p>
+    <p><strong>Dirección:</strong> ${task.direccion || 'No especificada'}</p>
+    <p><strong>Presupuesto:</strong> $${task.presupuesto || '0'}</p>
+  </div>
+`;
+}).join('');
     }
   } catch (error) {
     console.error("Error al cargar los servicios del usuario:", error);
   }
 }
+
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('status-btn-aceptar')) {
+    const uid = e.target.getAttribute('data-uid');
+    const usuarioActual = JSON.parse(localStorage.getItem('totusCurrentUser'));
+    const tareasAceptadas = usuarioActual.tareasAceptadas || [];
+
+    // Vuelve a obtener todasLasTareas del storage o de la última petición
+    fetch(JSONBIN_URL_SERVICIOS, { method: 'GET', headers: JSONBIN_HEADERS })
+      .then(res => res.json())
+      .then(data => {
+        const todasLasTareas = data.record?.servicios || [];
+        // Busca la tarea por uid
+        const tarea = todasLasTareas.find(task => (
+          ((task.categoria || '') +
+            (task.descripcion || '') +
+            (task.direccion || '') +
+            (task.presupuesto || '')
+          ).replace(/\s+/g, '') === uid
+        ));
+        if (tarea) {
+          const nuevaTarea = {
+            categoria: tarea.categoria,
+            descripcion: tarea.descripcion,
+            direccion: tarea.direccion,
+            presupuesto: tarea.presupuesto,
+            estado: "Aceptado",
+            uid: uid
+          };
+          tareasAceptadas.push(nuevaTarea);
+          usuarioActual.tareasAceptadas = tareasAceptadas;
+          localStorage.setItem('totusCurrentUser', JSON.stringify(usuarioActual));
+          cargarServiciosDelUsuario();
+        }
+      });
+  }
+});
 
 cargarServiciosDelUsuario();
