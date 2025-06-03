@@ -35,20 +35,30 @@ function obtenerUbicacion() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       function (position) {
-        lat = position.coords.latitude.toFixed(4);
-        lon = position.coords.longitude.toFixed(4);
+        lat = position.coords.latitude;
+        lon = position.coords.longitude;
+
+        // Mostrar texto con coordenadas
         ubicacionDiv.textContent = `Ubicación actual: Latitud ${lat}, Longitud ${lon}`;
+
+        // Mostrar mapa con ubicación
         mapa.style.display = "block";
         mapa.innerHTML = `<iframe width="100%" height="200" frameborder="0" style="border:0; border-radius:12px"
-          src="https://www.google.com/maps?q=${lat},${lon}&hl=es&z=16&output=embed" allowfullscreen></iframe>`;
+          src="https://maps.google.com/maps?q=${lat},${lon}&z=16&output=embed" allowfullscreen></iframe>`;
       },
-      function () {
-        ubicacionDiv.textContent = "No se pudo obtener la ubicación.";
+      function (error) {
+        console.error("Error obteniendo ubicación:", error);
+        ubicacionDiv.textContent = "No se pudo obtener la ubicación: " + error.message;
         mapa.style.display = "none";
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
       }
     );
   } else {
-    ubicacionDiv.textContent = "Geolocalización no soportada.";
+    ubicacionDiv.textContent = "Geolocalización no soportada por este navegador.";
     mapa.style.display = "none";
   }
 }
