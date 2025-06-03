@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfil TOTUS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    @media (max-width: 480px) {
+  .profile-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .profile-image {
+    margin-bottom: 16px;
+  }
+
+  .profile-info {
+    align-items: center;
+  }
+}
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background-color: #fff;
+      padding: 0 16px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .back-arrow {
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .rating-title {
+      flex: 1;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .profile-container {
+      display: flex;
+      align-items: center;
+      padding: 24px 0;
+    }
+
+    .profile-image {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 16px;
+    }
+
+    .profile-info {
+      flex: 1;
+    }
+
+    .name {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .stars {
+      display: flex;
+      gap: 4px;
+      font-size: 20px;
+      color: #000;
+    }
+
+    .rating-badge {
+      margin-top: 8px;
+      display: inline-block;
+      background-color: #bd1e2d;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .details {
+      margin-top: 32px;
+      font-size: 16px;
+    }
+
+    .details div {
+      margin-bottom: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Encabezado -->
+  <div class="header">
+    <a href="perfil.html" class="back-arrow">&#8592;</a>
+    <div class="rating-title">RATING</div>
+  </div>
+
+  <!-- Perfil -->
+  <div class="profile-container">
+    <img class="profile-image" src="img/image-19.png" alt="David Pérez" />
+    <div class="profile-info">
+      <div class="name">David Pérez</div>
+      <div class="stars">
+        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+      </div>
+      <div class="rating-badge">4.97</div>
+    </div>
+  </div>
+
+  <!-- Detalles -->
+  <div class="details">
+    <div>Trabajos realizados:</div>
+    <div>Tiempo como TOTUS:</div>
+  </div>
+
+</body>
+</html>
