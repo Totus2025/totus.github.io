@@ -1,54 +1,100 @@
+// Subir imagen a imgbb y guardar la URL en JSONBin
+async function subirImagen(file) {
+    const formData = new FormData();
+    formData.append("image", file);
+
+    const response = await fetch("https://api.imgbb.com/1/upload?key=7d3d0e78587384eedbb0103e1ea9c9e2", {
+        method: "POST",
+        body: formData
+    });
+
+    if (!response.ok) {
+        throw new Error("Error subiendo la imagen");
+    }
+    const data = await response.json();
+    return data.data.url; // Devuelve la URL de la imagen
+}
+
+async function guardarEnJSONBin(imageUrl) {
+    const jsonData = { imagen_url: imageUrl };
+
+    const response = await fetch("https://api.jsonbin.io/v3/b", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-Master-Key": "$2a$10$CT888X18GRmHBcV11efmxe.3Q1SsEppgTzBpNcboYWuNuKZGQR/P6"
+        },
+        body: JSON.stringify(jsonData)
+    });
+    if (!response.ok) {
+        throw new Error("Error guardando la URL en JSONBin");
+    }
+    return response.json();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  const LOCAL_STORAGE_SESSION_KEY = 'totusCurrentUser';
-  const userData = localStorage.getItem(LOCAL_STORAGE_SESSION_KEY);
+    const LOCAL_STORAGE_SESSION_KEY = 'totusCurrentUser';
+    const LOCAL_STORAGE_PROFILE_PIC_KEY = 'totusProfilePicture';
+    const userData = localStorage.getItem(LOCAL_STORAGE_SESSION_KEY);
 
-  if (!userData) {
-    window.location.href = "login.html";
-    return;
-  }
+    // Mostrar la imagen de perfil esté o no logueado el usuario
+    const profilePictureElement = document.getElementById('profilePicture');
+    const staticProfilePicture = localStorage.getItem(LOCAL_STORAGE_PROFILE_PIC_KEY);
+    if (staticProfilePicture && profilePictureElement) {
+        profilePictureElement.src = staticProfilePicture;
+    }
 
-  const session = JSON.parse(userData);
-  document.getElementById('userEmail').textContent = session.email || "";
+    if (!userData) {
+        // Si no hay usuario, sólo mostramos la foto estática y no seguimos
+        return;
+    }
 
-  const profilePictureElement = document.getElementById('profilePicture');
+    const session = JSON.parse(userData);
+    document.getElementById('userEmail').textContent = session.email || "";
 
-  // Cargar foto de perfil guardada en localStorage (si existe)
-  if (session.profilePicture) {
-    profilePictureElement.src = session.profilePicture;
-  }
+    // Manejar la subida de nueva foto de perfil
+    document.getElementById('uploadImage').addEventListener('change', async function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
 
-  // Manejar la subida de nueva foto de perfil 
-  document.getElementById('uploadImage').addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    if (!file) return;
+        try {
+            // Subir la imagen y obtener la URL
+            const imageUrl = await subirImagen(file);
+            // Guardar la URL en JSONBin (opcional)
+            await guardarEnJSONBin(imageUrl);
 
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const imageUrl = e.target.result;
-      profilePictureElement.src = imageUrl;
-      session.profilePicture = imageUrl;
-      localStorage.setItem(LOCAL_STORAGE_SESSION_KEY, JSON.stringify(session));
-    };
-    reader.readAsDataURL(file);
-  });
+            // Actualizar la imagen de perfil en la interfaz
+            profilePictureElement.src = imageUrl;
 
-  // Modal de cerrar sesión igual que ya tienes
-  const logoutLink = document.getElementById('logoutLink');
-  const confirmationModal = document.getElementById('confirmationModal');
-  const confirmLogout = document.getElementById('confirmLogout');
-  const cancelLogout = document.getElementById('cancelLogout');
+            // Guardar la imagen en el objeto de sesión actual y en la clave global
+            session.profilePicture = imageUrl;
+            localStorage.setItem(LOCAL_STORAGE_SESSION_KEY, JSON.stringify(session));
+            localStorage.setItem(LOCAL_STORAGE_PROFILE_PIC_KEY, imageUrl);
 
-  logoutLink.addEventListener('click', function(event) {
-    event.preventDefault();
-    confirmationModal.style.display = 'block';
-  });
+            alert("Imagen subida y almacenada correctamente.");
+        } catch (error) {
+            alert(error.message);
+        }
+    });
 
-  confirmLogout.addEventListener('click', function() {
-    localStorage.removeItem(LOCAL_STORAGE_SESSION_KEY);
-    window.location.href = "login.html";
-  });
+    // Modal de cerrar sesión
+    const logoutLink = document.getElementById('logoutLink');
+    const confirmationModal = document.getElementById('confirmationModal');
+    const confirmLogout = document.getElementById('confirmLogout');
+    const cancelLogout = document.getElementById('cancelLogout');
 
-  cancelLogout.addEventListener('click', function() {
-    confirmationModal.style.display = 'none';
-  });
+    logoutLink.addEventListener('click', function(event) {
+        event.preventDefault();
+        confirmationModal.style.display = 'block';
+    });
+
+    confirmLogout.addEventListener('click', function() {
+        localStorage.removeItem(LOCAL_STORAGE_SESSION_KEY);
+        // NO quitamos la foto de perfil estática
+        window.location.href = "login.html";
+    });
+
+    cancelLogout.addEventListener('click', function() {
+        confirmationModal.style.display = 'none';
+    });
 });
