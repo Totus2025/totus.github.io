@@ -132,6 +132,14 @@ document.getElementById('formTotu').addEventListener('submit', async function(e)
       document.getElementById('step1').classList.add('active');
       window.scrollTo(0, 0);
 
+      // Guarda las categorías elegidas en el usuario logueado
+      const usuarioActualizado = {
+        ...JSON.parse(localStorage.getItem('totusCurrentUser')),
+        categoriaPrincipal,
+        trabajosExtra
+      };
+      localStorage.setItem('totusCurrentUser', JSON.stringify(usuarioActualizado));
+
       setTimeout(() => {
         window.location = "Hometotus.html";
       }, 1700);
