@@ -24,9 +24,16 @@ async function cargarTareasDelCliente() {
 function renderTasks(tasks) {
   taskContainer.innerHTML = tasks.length === 0
     ? "<p>No tienes tareas registradas todavía.</p>"
-    : tasks.map((task, index) => `
+    : tasks.map((task, index) => {
+      // Clase según estado
+      let statusClass = "status-pendiente";
+      if (task.estado === "Aceptada") statusClass = "status-aceptada";
+      else if (task.estado === "Finalizada") statusClass = "status-finalizada";
+      // Puedes agregar más estados si los tienes
+
+      return `
       <div class="task-card">
-        <span class="status">${task.estado || 'Pendiente'}</span>
+        <span class="status ${statusClass}">${task.estado || 'Pendiente'}</span>
         <h2>${task.categoria}</h2>
         <p>${task.descripcion.slice(0, 60)}...</p>
         <p><strong>Teléfono:</strong> ${task.telefono ? task.telefono : '<span style="color:#888;">No registrado</span>'}</p>
@@ -40,9 +47,24 @@ function renderTasks(tasks) {
             </a>
           </div>
         ` : ''}
+        ${
+          (task.latitud && task.longitud) ? `
+            <div style="margin-bottom: 10px;">
+              <iframe
+                width="100%"
+                height="150"
+                frameborder="0"
+                style="border:0;border-radius:8px;"
+                src="https://www.google.com/maps?q=${task.latitud},${task.longitud}&hl=es&z=16&output=embed"
+                allowfullscreen>
+              </iframe>
+            </div>
+          ` : ''
+        }
         <button class="btn btn-danger btn-sm" style="width:100%;" onclick="showModal(${index})" data-bs-toggle="modal" data-bs-target="#taskModal">Leer más</button>
       </div>
-    `).join('');
+      `;
+    }).join('');
   window.tasksFiltradas = tasks;
 }
 

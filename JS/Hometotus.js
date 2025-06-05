@@ -121,20 +121,27 @@ document.addEventListener('click', function(e) {
             descripcion: tarea.descripcion,
             direccion: tarea.direccion,
             presupuesto: tarea.presupuesto,
-            estado: "Aceptado",
+            estado: "Aceptada", // <-- Consistente con el JSON Bin
             uid: uid,
-            telefono: tarea.telefono || '',           // <-- Agrega esto
-            latitud: tarea.latitud || '',             // <-- Agrega esto
-            longitud: tarea.longitud || ''            // <-- Agrega esto
+            telefono: tarea.telefono || '',
+            latitud: tarea.latitud || '',
+            longitud: tarea.longitud || ''
           };
           tareasAceptadas.push(nuevaTarea);
           usuarioActual.tareasAceptadas = tareasAceptadas;
           localStorage.setItem('totusCurrentUser', JSON.stringify(usuarioActual));
           // Cambia el estado en el array de todasLasTareas
-          tarea.estado = "Aceptada";
-          fetch(JSONBIN_URL_SERVICIOS, {
+          tarea.estado = "Aceptada"; // <-- Aquí también
+
+          // Usa la URL sin /latest para PUT
+          const JSONBIN_URL_SERVICIOS_PUT = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_SERVICIOS}`;
+
+          fetch(JSONBIN_URL_SERVICIOS_PUT, {
             method: 'PUT',
-            headers: JSONBIN_HEADERS,
+            headers: {
+              ...JSONBIN_HEADERS,
+              'Content-Type': 'application/json'
+            },
             body: JSON.stringify({ servicios: todasLasTareas })
           }).then(() => {
             window.location.href = "historialTotus.html";
