@@ -98,3 +98,5 @@
       document.getElementById("resFecha").innerText = datos.fecha;
       document.getElementById("resumen").style.display = "block";
     }
+
+  
