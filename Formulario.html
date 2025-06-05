@@ -76,7 +76,7 @@
       background-size: 16px 16px;
     }
 
-    .form label {
+    label {
       display: block;
       text-align: left;
       font-size: 14px;
@@ -214,7 +214,7 @@
     <input type="hidden" id="id_cliente" value="cliente123" />
     <input type="hidden" id="id_trabajador" value="" />
 
-    <div class="form">
+    <form onsubmit="publicarServicio(event)">
       <label for="descripcion">Descripción del servicio</label>
       <textarea id="descripcion" rows="4" placeholder="Describe el trabajo..."></textarea>
 
@@ -224,13 +224,16 @@
       <label for="direccion">Dirección</label>
       <input type="text" id="direccion" placeholder="Escribe tu dirección" />
 
-      <button class="small-button" onclick="obtenerUbicacion()">Obtener ubicación actual</button>
+      <label for="telefono">Número de teléfono</label>
+      <input type="text" id="telefono" placeholder="Ej. 5551234567" />
+
+      <button class="small-button" type="button" onclick="obtenerUbicacion()">Obtener ubicación actual</button>
 
       <div id="ubicacion-actual"></div>
       <div id="mapa" style="width: 100%; height: 200px; border-radius: 12px; display: none; margin-bottom: 15px;"></div>
 
-      <button class="publicar-btn" onclick="publicarServicio()">Publicar</button>
-    </div>
+      <button class="publicar-btn">Publicar</button>
+    </form>
   </div>
 
 

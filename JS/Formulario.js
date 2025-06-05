@@ -64,14 +64,17 @@ function obtenerUbicacion() {
 }
 
 // Publicar servicio
-async function publicarServicio() {
+async function publicarServicio(event) {
+  if (event) event.preventDefault();
+
   const categoria = document.getElementById("categoria").value;
   const descripcion = document.getElementById("descripcion").value;
   const presupuesto = document.getElementById("presupuesto").value;
   const direccion = document.getElementById("direccion").value;
+  const telefono = document.getElementById("telefono").value;
+  console.log("Valor de teléfono:", telefono); // <-- Agrega esto
 
-
-  if (!categoria || !descripcion || !presupuesto || !direccion || lat === null || lon === null) {
+  if (!categoria || !descripcion || !presupuesto || !direccion || !telefono || lat === null || lon === null) {
     alert("Por favor, completa todos los campos y obtén la ubicación.");
     return;
   }
@@ -90,8 +93,10 @@ async function publicarServicio() {
     latitud: lat,
     longitud: lon,
     fecha: new Date().toISOString(),
-    cliente_id: clienteID, // <-- aquí va el userId del usuario logueado
-    trabajador_id: null  // aún no asignado
+    cliente_id: clienteID,
+    trabajador_id: null,
+    telefono: telefono,
+    estado: "Pendiente" // <-- Siempre inicia como Pendiente
   };
 
   try {
@@ -123,6 +128,7 @@ async function publicarServicio() {
       document.getElementById("categoria").value = "";
       document.getElementById("descripcion").value = "";
       document.getElementById("presupuesto").value = "";
+      document.getElementById("telefono").value = ""; // <-- Limpiar teléfono
       document.getElementById("direccion").value = "";
       document.getElementById("ubicacion-actual").textContent = "";
       document.getElementById("mapa").innerHTML = "";
@@ -131,7 +137,7 @@ async function publicarServicio() {
       lon = null;
 
       // Redirigir al historial o pantalla deseada
-      window.location.href = "PantallaTareas.html";
+      window.location.href = "PantallaTareas.html"; // <--- DESCOMENTADO
     } else {
       throw new Error('Error al guardar en JSONBin');
     }

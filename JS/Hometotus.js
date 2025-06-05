@@ -47,7 +47,7 @@ async function cargarServiciosDelUsuario() {
     if (homeContainer) {
       homeContainer.innerHTML = tareasCoincidentes.length === 0
         ? "<p>No hay tareas que coincidan con tu perfil.</p>"
-        : tareasCoincidentes.map((task) => {
+        : tareasCoincidentes.map((task, idx) => {
     const uid = (
       (task.categoria || '') +
       (task.descripcion || '') +
@@ -55,18 +55,40 @@ async function cargarServiciosDelUsuario() {
       (task.presupuesto || '')
     ).replace(/\s+/g, '');
     return `
-  <div class="task-card">
-    ${
-      (task.estado || 'Pendiente') === 'Pendiente'
-        ? `<button class="status-btn-aceptar" data-uid="${uid}">Aceptar pedido</button>`
-        : `<span class="status" data-status="${task.estado || 'Pendiente'}">${task.estado || 'Pendiente'}</span>`
-    }
-    <h2>${task.categoria}</h2>
-    <p><strong>Descripción:</strong> ${task.descripcion}</p>
-    <p><strong>Dirección:</strong> ${task.direccion || 'No especificada'}</p>
-    <p><strong>Presupuesto:</strong> $${task.presupuesto || '0'}</p>
-  </div>
-`;
+      <div class="task-card">
+        <span class="status" data-status="${task.estado || 'Pendiente'}">${task.estado || 'Pendiente'}</span>
+        <h2>${task.categoria}</h2>
+        <p><strong>Descripción:</strong> ${task.descripcion}</p>
+        <p><strong>Dirección:</strong> ${task.direccion || 'No especificada'}</p>
+        <p><strong>Presupuesto:</strong> $${task.presupuesto || '0'}</p>
+        <p><strong>Teléfono:</strong> ${task.telefono ? task.telefono : '<span style="color:#888;">No registrado</span>'}</p>
+        ${task.telefono ? `
+          <div style="margin-bottom: 10px;">
+            <a class="btn btn-success btn-sm"
+               href="https://wa.me/${task.telefono}"
+               target="_blank"
+               style="width:100%;">
+              <i class="bi bi-whatsapp"></i> WhatsApp
+            </a>
+          </div>
+        ` : ''}
+        ${
+          (task.latitud && task.longitud) ? `
+            <div style="margin-bottom: 10px;">
+              <iframe
+                width="100%"
+                height="150"
+                frameborder="0"
+                style="border:0;border-radius:8px;"
+                src="https://www.google.com/maps?q=${task.latitud},${task.longitud}&hl=es&z=16&output=embed"
+                allowfullscreen>
+              </iframe>
+            </div>
+          ` : ''
+        }
+        <button class="status-btn-aceptar" data-uid="${uid}" style="width:100%;margin-top:8px;">Aceptar pedido</button>
+      </div>
+    `;
 }).join('');
     }
   } catch (error) {
@@ -100,7 +122,10 @@ document.addEventListener('click', function(e) {
             direccion: tarea.direccion,
             presupuesto: tarea.presupuesto,
             estado: "Aceptado",
-            uid: uid
+            uid: uid,
+            telefono: tarea.telefono || '',           // <-- Agrega esto
+            latitud: tarea.latitud || '',             // <-- Agrega esto
+            longitud: tarea.longitud || ''            // <-- Agrega esto
           };
           tareasAceptadas.push(nuevaTarea);
           usuarioActual.tareasAceptadas = tareasAceptadas;
@@ -110,5 +135,83 @@ document.addEventListener('click', function(e) {
       });
   }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+  const usuarioActual = JSON.parse(localStorage.getItem('totusCurrentUser'));
+  const tareas = usuarioActual?.tareasAceptadas || [];
+  const contenedor = document.getElementById('homeTareasContainer');
+  if (tareas.length === 0) {
+    contenedor.innerHTML = "<p>No tienes tareas aceptadas aún.</p>";
+    return;
+  }
+  contenedor.innerHTML = tareas.map((tarea, idx) => `
+    <div class="task-card">
+      <span class="status">${tarea.estado || 'Aceptado'}</span>
+      <h4>${tarea.categoria}</h4>
+      <p><strong>Descripción:</strong> ${tarea.descripcion}</p>
+      <p><strong>Dirección:</strong> ${tarea.direccion}</p>
+      <p><strong>Presupuesto:</strong> $${tarea.presupuesto}</p>
+      <p><strong>Teléfono:</strong> ${tarea.telefono ? tarea.telefono : '<span style="color:#888;">No registrado</span>'}</p>
+      ${tarea.telefono ? `
+        <div style="margin-bottom: 10px;">
+          <a class="btn btn-success btn-sm"
+             href="https://wa.me/${tarea.telefono}"
+             target="_blank"
+             style="width:100%;">
+            <i class="bi bi-whatsapp"></i> WhatsApp
+          </a>
+        </div>
+      ` : ''}
+      <button class="btn btn-danger btn-sm" style="width:100%;" onclick="showHomeModal(${idx})" data-bs-toggle="modal" data-bs-target="#homeTaskModal">Ver más</button>
+    </div>
+  `).join('');
+  window.homeTareas = tareas;
+});
+
+function showHomeModal(idx) {
+  const tarea = window.homeTareas[idx];
+  document.getElementById('homeModalCategory').textContent = tarea.categoria || '';
+  document.getElementById('homeModalDescription').textContent = tarea.descripcion || '';
+  document.getElementById('homeModalAddress').textContent = tarea.direccion || '';
+  document.getElementById('homeModalBudget').textContent = tarea.presupuesto || '';
+  document.getElementById('homeModalPhone').textContent = tarea.telefono ? tarea.telefono : 'No registrado';
+  document.getElementById('homeModalWhatsapp').innerHTML = tarea.telefono
+    ? `<a class="btn btn-success btn-sm" href="https://wa.me/${tarea.telefono}" target="_blank">
+          <i class="bi bi-whatsapp"></i> WhatsApp
+       </a>`
+    : '';
+  if (tarea.latitud && tarea.longitud) {
+    document.getElementById('homeModalUbicacion').innerHTML = `
+      <a href="https://www.google.com/maps/search/?api=1&query=${tarea.latitud},${tarea.longitud}" target="_blank">
+        Ver ubicación en Google Maps
+      </a>
+    `;
+  } else {
+    document.getElementById('homeModalUbicacion').innerHTML = '';
+  }
+}
+
+function showInfoModal(idx) {
+  const tarea = window.tareasCoincidentes[idx];
+  document.getElementById('homeModalCategory').textContent = tarea.categoria || '';
+  document.getElementById('homeModalDescription').textContent = tarea.descripcion || '';
+  document.getElementById('homeModalAddress').textContent = tarea.direccion || '';
+  document.getElementById('homeModalBudget').textContent = tarea.presupuesto || '';
+  document.getElementById('homeModalPhone').textContent = tarea.telefono ? tarea.telefono : 'No registrado';
+  document.getElementById('homeModalWhatsapp').innerHTML = tarea.telefono
+    ? `<a class="btn btn-success btn-sm" href="https://wa.me/${tarea.telefono}" target="_blank">
+          <i class="bi bi-whatsapp"></i> WhatsApp
+       </a>`
+    : '';
+  if (tarea.latitud && tarea.longitud) {
+    document.getElementById('homeModalUbicacion').innerHTML = `
+      <a href="https://www.google.com/maps/search/?api=1&query=${tarea.latitud},${tarea.longitud}" target="_blank">
+        Ver ubicación en Google Maps
+      </a>
+    `;
+  } else {
+    document.getElementById('homeModalUbicacion').innerHTML = '';
+  }
+}
 
 cargarServiciosDelUsuario();

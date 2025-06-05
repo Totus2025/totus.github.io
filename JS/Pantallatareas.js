@@ -29,7 +29,18 @@ function renderTasks(tasks) {
         <span class="status">${task.estado || 'Pendiente'}</span>
         <h2>${task.categoria}</h2>
         <p>${task.descripcion.slice(0, 60)}...</p>
-        <button class="btn btn-danger btn-sm" onclick="showModal(${index})" data-bs-toggle="modal" data-bs-target="#taskModal">Leer más</button>
+        <p><strong>Teléfono:</strong> ${task.telefono ? task.telefono : '<span style="color:#888;">No registrado</span>'}</p>
+        ${task.telefono ? `
+          <div style="margin-bottom: 10px;">
+            <a class="btn btn-success btn-sm" 
+               href="https://wa.me/${task.telefono}" 
+               target="_blank" 
+               style="width:100%;">
+              <i class="bi bi-whatsapp"></i> WhatsApp
+            </a>
+          </div>
+        ` : ''}
+        <button class="btn btn-danger btn-sm" style="width:100%;" onclick="showModal(${index})" data-bs-toggle="modal" data-bs-target="#taskModal">Leer más</button>
       </div>
     `).join('');
   window.tasksFiltradas = tasks;
@@ -37,11 +48,21 @@ function renderTasks(tasks) {
 
 function showModal(index) {
   const task = window.tasksFiltradas[index];
-  document.getElementById("modalCategory").textContent = task.categoria;
-  document.getElementById("modalDescription").textContent = task.descripcion;
-  document.getElementById("modalBudget").textContent = task.presupuesto;
-  document.getElementById("modalAddress").textContent = task.direccion;
-  document.getElementById("modalStatus").textContent = task.estado || 'Pendiente';
+  document.getElementById('modalCategory').textContent = task.categoria || '';
+  document.getElementById('modalDescription').textContent = task.descripcion || '';
+  document.getElementById('modalBudget').textContent = task.presupuesto || '';
+  document.getElementById('modalAddress').textContent = task.direccion || '';
+  document.getElementById('modalPhone').textContent = task.telefono ? task.telefono : 'No registrado';
+  document.getElementById('modalStatus').textContent = task.estado || '';
+
+  // Si tienes un contenedor para el botón de WhatsApp en el modal:
+  if (document.getElementById('modalWhatsapp')) {
+    document.getElementById('modalWhatsapp').innerHTML = task.telefono
+      ? `<a class="btn btn-success btn-sm" href="https://wa.me/${task.telefono}" target="_blank">
+            <i class="bi bi-whatsapp"></i> WhatsApp
+         </a>`
+      : '';
+  }
 }
 
 cargarTareasDelCliente();

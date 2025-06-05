@@ -209,6 +209,41 @@ footer .nav-item.active {
 .task-card .status[data-status="Aceptado"] {
   background: #5bc0de;
 }
+#homeModalWhatsapp {
+  margin: 10px 0;
+  text-align: center;
+}
+#homeModalUbicacion a {
+  display: inline-block;
+  margin-top: 8px;
+  color: #0d6efd;
+  text-decoration: underline;
+  font-weight: 500;
+}
+#homeModalUbicacion a:hover {
+  color: #b30000;
+  text-decoration: none;
+}
+
+/* Botón Aceptar Pedido personalizado */
+.status-btn-aceptar {
+  background-color: #c40000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 0;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 8px;
+  width: 100%;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(196,0,0,0.08);
+}
+.status-btn-aceptar:hover,
+.status-btn-aceptar:focus {
+  background-color: #a30000;
+  color: #fff;
+}
   </style>
 </head>
 <body>
@@ -230,6 +265,33 @@ footer .nav-item.active {
   </header>
 
   <div id="homeTareasContainer" class="container mt-4"></div>
+
+  <!-- Contenedor de tareas -->
+  <div id="homeTareas"></div>
+
+  <!-- Modal para detalles -->
+  <div class="modal fade" id="homeTaskModal" tabindex="-1" aria-labelledby="homeTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-danger" id="homeTaskModalLabel">Detalles del Servicio</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Categoría:</strong> <span id="homeModalCategory"></span></p>
+          <p><strong>Descripción:</strong> <span id="homeModalDescription"></span></p>
+          <p><strong>Dirección:</strong> <span id="homeModalAddress"></span></p>
+          <p><strong>Presupuesto:</strong> <span id="homeModalBudget"></span></p>
+          <p><strong>Teléfono:</strong> <span id="homeModalPhone"></span></p>
+          <div id="homeModalWhatsapp" style="margin: 10px 0; text-align: center;"></div>
+          <div id="homeModalUbicacion"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-close-modal" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Footer -->
   <footer class="d-flex justify-content-around align-items-center p-3">
