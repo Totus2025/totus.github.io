@@ -16,7 +16,7 @@
 
       // Mostrar la fecha de registro
       const registrationDateElement = document.getElementById('registrationDate');
-      const registrationDate = session.registrationDate || "2025-05-04"; // Cambia esto según tu implementación
+      const registrationDate = session.registrationDate || "2025-05-04"; 
       registrationDateElement.textContent = new Date(registrationDate).toLocaleDateString();
 
       // Mostrar la foto de perfil
