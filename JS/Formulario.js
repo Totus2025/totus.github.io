@@ -62,57 +62,47 @@ function obtenerUbicacion() {
     mapa.style.display = "none";
   }
 }
-
-// Publicar servicio
-async function publicarServicio(event) {
-  if (event) event.preventDefault();
-
+ //aca se publica el servicio y todo el metodo
+ async function publicarServicio() {
   const categoria = document.getElementById("categoria").value;
   const descripcion = document.getElementById("descripcion").value;
   const presupuesto = document.getElementById("presupuesto").value;
   const direccion = document.getElementById("direccion").value;
-  const telefono = document.getElementById("telefono").value;
-  console.log("Valor de teléfono:", telefono); // <-- Agrega esto
+  const metodoPago = document.getElementById("metodo-pago").value;
 
-  if (!categoria || !descripcion || !presupuesto || !direccion || !telefono || lat === null || lon === null) {
+  if (!categoria || !descripcion || !presupuesto || !direccion || !lat || !lon) {
     alert("Por favor, completa todos los campos y obtén la ubicación.");
     return;
   }
 
-  // Obtener ID del cliente 
-  const usuarioActual = JSON.parse(localStorage.getItem('totusCurrentUser'));
-  const clienteID = usuarioActual?.userId; // <-- usa userId, no id ni generarId
+  if (metodoPago === "tarjeta" && !pagoRealizado) {
+    alert("Por favor, completa el pago con tarjeta antes de continuar.");
+    return;
+  }
 
-  // Crear objeto servicio con ID único
   const servicio = {
-    id: generarId('sv_'),
     categoria: categoria,
     descripcion: descripcion,
     presupuesto: presupuesto,
     direccion: direccion,
+    metodoPago: metodoPago,
     latitud: lat,
     longitud: lon,
-    fecha: new Date().toISOString(),
-    cliente_id: clienteID,
-    trabajador_id: null,
-    telefono: telefono,
-    estado: "Pendiente" // <-- Siempre inicia como Pendiente
+    fecha: new Date().toISOString()
   };
 
   try {
-    // 1. Obtener servicios existentes
-    const responseGet = await fetch(JSONBIN_URL_SERVICIOS + '/latest', {
+    const responseGet = await fetch(JSONBIN_URL + '/latest', {
       method: 'GET',
       headers: JSONBIN_HEADERS
     });
+
     const data = await responseGet.json();
     const serviciosExistentes = data.record?.servicios || [];
 
-    // 2. Agregar el nuevo servicio
     serviciosExistentes.push(servicio);
 
-    // 3. Actualizar el bin completo
-    const responsePut = await fetch(JSONBIN_URL_SERVICIOS, {
+    const responsePut = await fetch(JSONBIN_URL, {
       method: 'PUT',
       headers: JSONBIN_HEADERS,
       body: JSON.stringify({ servicios: serviciosExistentes })
@@ -120,24 +110,19 @@ async function publicarServicio(event) {
 
     if (responsePut.ok) {
       console.log("Servicio guardado correctamente:", servicio);
-
-      // 4. Notificar a trabajadores
-      await notificarTrabajadores(servicio);
-
       // Limpiar campos
       document.getElementById("categoria").value = "";
       document.getElementById("descripcion").value = "";
       document.getElementById("presupuesto").value = "";
-      document.getElementById("telefono").value = ""; // <-- Limpiar teléfono
       document.getElementById("direccion").value = "";
       document.getElementById("ubicacion-actual").textContent = "";
       document.getElementById("mapa").innerHTML = "";
       document.getElementById("mapa").style.display = "none";
-      lat = null;
-      lon = null;
 
-      // Redirigir al historial o pantalla deseada
-      window.location.href = "PantallaTareas.html"; // <--- DESCOMENTADO
+      pagoRealizado = false;
+
+      // Redirigir al historial
+      window.location.href = "PantallaTareas.html";
     } else {
       throw new Error('Error al guardar en JSONBin');
     }
@@ -208,3 +193,42 @@ function closeDialog() {
 function goToHome() {
   window.location.href = "home.html";
 }
+paypal.Buttons({
+  createOrder: function(data, actions) {
+    const presupuesto = parseFloat(document.getElementById("presupuesto").value);
+    if (isNaN(presupuesto) || presupuesto <= 0) {
+      alert("Por favor ingresa un presupuesto válido antes de pagar.");
+      return;
+    }
+    return actions.order.create({
+      purchase_units: [{
+        amount: {
+          value: presupuesto.toFixed(2)
+        }
+      }]
+    });
+  },
+ onApprove: function(data, actions) {
+  return actions.order.capture().then(function(details) {
+    pagoRealizado = true;
+
+    // Mensaje visual
+    document.getElementById("pago-exitoso").style.display = "block";
+
+    // Oculta el botón PayPal
+    document.getElementById("paypal-button-container").style.display = "none";
+
+    // Desactiva el selector de método de pago para que no cambie
+    document.getElementById("metodo-pago").disabled = true;
+
+    // También podrías desactivar el input de presupuesto si quieres
+    document.getElementById("presupuesto").readOnly = true;
+
+    // Opcional: esperar 2 segundos y publicar automáticamente
+    setTimeout(() => {
+      publicarServicio();
+    }, 2000);
+  });
+}
+
+}).render('#paypal-button-container');
