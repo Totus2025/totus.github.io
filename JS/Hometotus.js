@@ -86,7 +86,7 @@ async function cargarServiciosDelUsuario() {
             </div>
           ` : ''
         }
-        <button class="status-btn-aceptar" data-uid="${uid}" style="width:100%;margin-top:8px;">Aceptar pedido</button>
+        <button class="status-btn-aceptar" data-uid="${uid}" style="width:100%;margin-top:8px;">Aceptar Tarea</button>
       </div>
     `;
 }).join('');
@@ -130,7 +130,15 @@ document.addEventListener('click', function(e) {
           tareasAceptadas.push(nuevaTarea);
           usuarioActual.tareasAceptadas = tareasAceptadas;
           localStorage.setItem('totusCurrentUser', JSON.stringify(usuarioActual));
-          cargarServiciosDelUsuario();
+          // Cambia el estado en el array de todasLasTareas
+          tarea.estado = "Aceptada";
+          fetch(JSONBIN_URL_SERVICIOS, {
+            method: 'PUT',
+            headers: JSONBIN_HEADERS,
+            body: JSON.stringify({ servicios: todasLasTareas })
+          }).then(() => {
+            window.location.href = "historialTotus.html";
+          });
         }
       });
   }
