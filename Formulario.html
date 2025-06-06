@@ -231,6 +231,16 @@
 
       <div id="ubicacion-actual"></div>
       <div id="mapa" style="width: 100%; height: 200px; border-radius: 12px; display: none; margin-bottom: 15px;"></div>
+      
+      <label for="metodo-pago">Método de pago</label>
+      <select id="metodo-pago" onchange="mostrarPago()">
+        <option value="efectivo">Efectivo</option>
+        <option value="tarjeta">Tarjeta (PayPal)</option>
+      </select>
+      <div id="paypal-container" style="display:none; margin-bottom:15px;">
+        <div id="paypal-button-container"></div>
+      </div>
+
       <button class="publicar-btn">Publicar</button>
     </form>
   </div>
@@ -245,7 +255,7 @@
       <button class="btn-cancel" onclick="closeDialog()">Seguir editando</button>
     </div>
   </div>
-  <script src="https://www.paypal.com/sdk/js?client-id=client-id&currency=USD"></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
   <script src="JS/Formulario.js"></script>
 
  

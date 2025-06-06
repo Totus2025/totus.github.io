@@ -71,6 +71,11 @@ async function publicarServicio(event) {
   const descripcion = document.getElementById("descripcion").value;
   const presupuesto = document.getElementById("presupuesto").value;
   const direccion = document.getElementById("direccion").value;
+  const telefono = document.getElementById("telefono").value; // <-- Agregado
+
+  // Obtén el usuario actual y su ID
+  const usuarioActual = JSON.parse(localStorage.getItem('totusCurrentUser'));
+  const clienteId = usuarioActual?.userId || '';
 
   if (!categoria || !descripcion || !presupuesto || !direccion || !lat || !lon) {
     alert("Por favor, completa todos los campos y obtén la ubicación.");
@@ -82,9 +87,12 @@ async function publicarServicio(event) {
     descripcion: descripcion,
     presupuesto: presupuesto,
     direccion: direccion,
+    telefono: telefono,
     latitud: lat,
     longitud: lon,
-    fecha: new Date().toISOString()
+    fecha: new Date().toISOString(),
+    cliente_id: clienteId,
+    estado: "Pendiente" // <-- Agregado: estado por defecto
   };
 
   try {
@@ -105,12 +113,12 @@ async function publicarServicio(event) {
     });
 
     if (responsePut.ok) {
-      console.log("Servicio guardado correctamente:", servicio);
       // Limpiar campos
       document.getElementById("categoria").value = "";
       document.getElementById("descripcion").value = "";
       document.getElementById("presupuesto").value = "";
       document.getElementById("direccion").value = "";
+      document.getElementById("telefono").value = ""; // <-- Limpiar campo teléfono
       document.getElementById("ubicacion-actual").textContent = "";
       document.getElementById("mapa").innerHTML = "";
       document.getElementById("mapa").style.display = "none";
@@ -126,55 +134,6 @@ async function publicarServicio(event) {
   }
 }
 
-// Función para notificar a trabajadores de la categoría correspondiente
-async function notificarTrabajadores(servicio) {
-  try {
-    // Obtener todos los trabajadores
-    const resTrabajadores = await fetch(JSONBIN_URL_TRABAJADORES + '/latest', {
-      method: 'GET',
-      headers: JSONBIN_HEADERS
-    });
-    const dataTrabajadores = await resTrabajadores.json();
-    const trabajadores = dataTrabajadores.record?.trabajadores || [];
-
-    // Filtrar trabajadores que coincidan con la categoría
-    const trabajadoresFiltrados = trabajadores.filter(t => t.categoria === servicio.categoria);
-
-    // Obtener notificaciones actuales
-    const resNotificaciones = await fetch(JSONBIN_URL_NOTIFICACIONES + '/latest', {
-      method: 'GET',
-      headers: JSONBIN_HEADERS
-    });
-    const dataNotificaciones = await resNotificaciones.json();
-    const notificacionesActuales = dataNotificaciones.record || [];
-
-    // Crear nuevas notificaciones para cada trabajador filtrado
-    trabajadoresFiltrados.forEach(w => {
-      notificacionesActuales.push({
-        id: generarId('ntf_'),
-        trabajador_id: w.id,
-        tarea_id: servicio.id,
-        leida: false
-      });
-    });
-
-    // Guardar notificaciones actualizadas
-    const resPutNotificaciones = await fetch(JSONBIN_URL_NOTIFICACIONES, {
-      method: 'PUT',
-      headers: JSONBIN_HEADERS,
-      body: JSON.stringify(notificacionesActuales)
-    });
-
-    if (resPutNotificaciones.ok) {
-      console.log('Notificaciones enviadas correctamente.');
-    } else {
-      throw new Error('Error al guardar notificaciones');
-    }
-  } catch (error) {
-    console.error("Error al enviar notificaciones:", error);
-  }
-}
-
 // Funciones para navegación y diálogo
 function confirmBack() {
   document.getElementById("overlay").classList.add("active");
@@ -185,5 +144,43 @@ function closeDialog() {
 }
 
 function goToHome() {
-  window.location.href = "home.html";
+  window.location.href = "index.html";
 }
+
+function mostrarPago() {
+  const metodo = document.getElementById('metodo-pago').value;
+  const paypalContainer = document.getElementById('paypal-container');
+  const paypalButton = document.getElementById('paypal-button-container');
+  if (metodo === 'tarjeta') {
+    paypalContainer.style.display = 'block';
+    // Limpia el contenedor antes de renderizar para evitar errores de PayPal
+    paypalButton.innerHTML = '';
+    if (window.paypal) {
+      paypal.Buttons({
+        createOrder: function(data, actions) {
+          return actions.order.create({
+            purchase_units: [{
+              amount: { value: '1.00' } // Monto de prueba
+            }]
+          });
+        },
+        onApprove: function(data, actions) {
+          return actions.order.capture().then(function(details) {
+            alert('Pago completado por ' + details.payer.name.given_name);
+          });
+        }
+      }).render('#paypal-button-container');
+    }
+  } else {
+    paypalContainer.style.display = 'none';
+    paypalButton.innerHTML = '';
+  }
+}
+
+// Inicializa el estado correcto al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+  if (document.getElementById('metodo-pago')) {
+    mostrarPago();
+    document.getElementById('metodo-pago').addEventListener('change', mostrarPago);
+  }
+});
