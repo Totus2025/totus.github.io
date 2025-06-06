@@ -62,21 +62,18 @@ function obtenerUbicacion() {
     mapa.style.display = "none";
   }
 }
- //aca se publica el servicio y todo el metodo
- async function publicarServicio() {
+
+// Publicar servicio (sin método de pago ni tarjeta)
+async function publicarServicio(event) {
+  if (event) event.preventDefault();
+
   const categoria = document.getElementById("categoria").value;
   const descripcion = document.getElementById("descripcion").value;
   const presupuesto = document.getElementById("presupuesto").value;
   const direccion = document.getElementById("direccion").value;
-  const metodoPago = document.getElementById("metodo-pago").value;
 
   if (!categoria || !descripcion || !presupuesto || !direccion || !lat || !lon) {
     alert("Por favor, completa todos los campos y obtén la ubicación.");
-    return;
-  }
-
-  if (metodoPago === "tarjeta" && !pagoRealizado) {
-    alert("Por favor, completa el pago con tarjeta antes de continuar.");
     return;
   }
 
@@ -85,14 +82,13 @@ function obtenerUbicacion() {
     descripcion: descripcion,
     presupuesto: presupuesto,
     direccion: direccion,
-    metodoPago: metodoPago,
     latitud: lat,
     longitud: lon,
     fecha: new Date().toISOString()
   };
 
   try {
-    const responseGet = await fetch(JSONBIN_URL + '/latest', {
+    const responseGet = await fetch(JSONBIN_URL_SERVICIOS + '/latest', {
       method: 'GET',
       headers: JSONBIN_HEADERS
     });
@@ -102,7 +98,7 @@ function obtenerUbicacion() {
 
     serviciosExistentes.push(servicio);
 
-    const responsePut = await fetch(JSONBIN_URL, {
+    const responsePut = await fetch(JSONBIN_URL_SERVICIOS, {
       method: 'PUT',
       headers: JSONBIN_HEADERS,
       body: JSON.stringify({ servicios: serviciosExistentes })
@@ -118,8 +114,6 @@ function obtenerUbicacion() {
       document.getElementById("ubicacion-actual").textContent = "";
       document.getElementById("mapa").innerHTML = "";
       document.getElementById("mapa").style.display = "none";
-
-      pagoRealizado = false;
 
       // Redirigir al historial
       window.location.href = "PantallaTareas.html";
@@ -181,7 +175,7 @@ async function notificarTrabajadores(servicio) {
   }
 }
 
-// Funciones para navegación y diálogo (las que ya tienes)
+// Funciones para navegación y diálogo
 function confirmBack() {
   document.getElementById("overlay").classList.add("active");
 }
@@ -193,42 +187,3 @@ function closeDialog() {
 function goToHome() {
   window.location.href = "home.html";
 }
-paypal.Buttons({
-  createOrder: function(data, actions) {
-    const presupuesto = parseFloat(document.getElementById("presupuesto").value);
-    if (isNaN(presupuesto) || presupuesto <= 0) {
-      alert("Por favor ingresa un presupuesto válido antes de pagar.");
-      return;
-    }
-    return actions.order.create({
-      purchase_units: [{
-        amount: {
-          value: presupuesto.toFixed(2)
-        }
-      }]
-    });
-  },
- onApprove: function(data, actions) {
-  return actions.order.capture().then(function(details) {
-    pagoRealizado = true;
-
-    // Mensaje visual
-    document.getElementById("pago-exitoso").style.display = "block";
-
-    // Oculta el botón PayPal
-    document.getElementById("paypal-button-container").style.display = "none";
-
-    // Desactiva el selector de método de pago para que no cambie
-    document.getElementById("metodo-pago").disabled = true;
-
-    // También podrías desactivar el input de presupuesto si quieres
-    document.getElementById("presupuesto").readOnly = true;
-
-    // Opcional: esperar 2 segundos y publicar automáticamente
-    setTimeout(() => {
-      publicarServicio();
-    }, 2000);
-  });
-}
-
-}).render('#paypal-button-container');
