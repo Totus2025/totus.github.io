@@ -153,6 +153,10 @@
             expiresAt: new Date().getTime() + (60 * 60 * 1000)
           };
           localStorage.setItem(LOCAL_STORAGE_SESSION_KEY, JSON.stringify(sessionData));
+          
+          // Una línea nueva de código
+          localStorage.setItem('tipoUsuario', 'cliente');
+
           setTimeout(() => { window.location.href = "home.html"; }, 1500);
         } else {
           showAlert(loginAlert, 'Correo o contraseña incorrectos', false);

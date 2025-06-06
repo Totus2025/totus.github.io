@@ -140,6 +140,8 @@ document.getElementById('formTotu').addEventListener('submit', async function(e)
       };
       localStorage.setItem('totusCurrentUser', JSON.stringify(usuarioActualizado));
 
+      localStorage.setItem('tipoUsuario', 'trabajador');
+
       setTimeout(() => {
         window.location = "Hometotus.html";
       }, 1700);

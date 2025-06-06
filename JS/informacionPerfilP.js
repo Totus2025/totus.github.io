@@ -99,4 +99,13 @@
       document.getElementById("resumen").style.display = "block";
     }
 
+    function regresarPerfil() {
+  const tipoUsuario = localStorage.getItem('tipoUsuario');
+  if (tipoUsuario === 'trabajador') {
+    location.href = 'pantallaPerfil.html';
+  } else {
+    location.href = 'perfil.html';
+  }
+}
+
   
