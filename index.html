@@ -338,6 +338,17 @@
         document.body.insertBefore(userSection, document.body.firstChild);
 
     });
+
+    // Evita mostrar el contenido hasta validar la sesión
+    document.documentElement.style.visibility = 'hidden';
+    document.addEventListener('DOMContentLoaded', function() {
+      const session = localStorage.getItem('totusCurrentUser');
+      if (!session) {
+        window.location.href = "login.html";
+      } else {
+        document.documentElement.style.visibility = 'visible';
+      }
+    });
   </script>
 </body>
 </html>
