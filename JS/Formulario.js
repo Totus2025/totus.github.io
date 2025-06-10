@@ -144,7 +144,7 @@ function closeDialog() {
 }
 
 function goToHome() {
-  window.location.href = "index.html";
+  window.location.href = "home.html";
 }
 
 function mostrarPago() {
