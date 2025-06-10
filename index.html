@@ -1,215 +1,343 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TOTUS - Login y Registro</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TOTUS-Home</title>
+  
+  <!-- Bootstrap CSS Jjhsd -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: Arial, sans-serif;
-      background-color: #ffffff;
-      min-height: 100vh;
-      padding: 20px;
-      margin: 0;
-    }
-    /* Pantalla de bienvenida */
-    .splash {
-      position: fixed;
-      z-index: 99;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: #d32f2f;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: opacity 0.8s;
-      opacity: 1;
-      pointer-events: all;
-    }
-    .splash.hide {
-      opacity: 0;
-      pointer-events: none;
-    }
-    .splash-logo {
-      width: 150px;
-      opacity: 0;
-      animation: aparecer 2s ease-out forwards;
-    }
-    @keyframes aparecer {
-      0% { transform: scale(0.8); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-    @media screen and (max-width: 768px) {
-      .splash-logo { width: 120px; }
-    }
-    @media screen and (max-width: 480px) {
-      .splash-logo { width: 100px; }
+      background-color: #f8f9fa;
+      padding-bottom: 70px; /* espacio suficiente para el footer */
+
     }
 
-    /* Login/Registro */
-    .container {
-      width: 100%;
-      max-width: 420px;
-      border-radius: 15px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      overflow: hidden;
-      border: 1px solid #eee;
-      margin: 0 auto;
-      background: #fff;
-      display: none; /* Oculto por defecto, se muestra después del splash */
-      position: relative;
-      z-index: 1;
-      margin-top: 60px;
-    }
-    .form-section {
-      padding: 30px;
-      width: 100%;
-      transition: all 0.3s ease;
-    }
     .logo {
-      width: 70px;
-      margin: 0 auto 20px;
-      display: block;
-    }
-    h1, h2 {
-      color: #d32f2f;
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    h2 { font-size: 1.5rem; }
-    .subtitle {
-      text-align: center;
-      color: #666;
-      margin-bottom: 25px;
-      font-size: 0.9rem;
-    }
-    input {
-      width: 100%;
-      padding: 12px 15px;
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 1rem;
-      transition: border 0.3s;
-    }
-    input:focus {
-      border-color: #d32f2f;
-      outline: none;
-    }
-    button {
-      width: 100%;
-      padding: 14px;
-      background-color: #d32f2f;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-top: 10px;
+      font-size: 1.8rem;
+      color: #b30000;
       font-weight: bold;
-      transition: background 0.3s;
+      letter-spacing: 2px;
+    }
+
+    .header {
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .location {
+      font-weight: bold; /* Negritas para "San Miguel" */
+      color: #333;
+      display: flex;
       align-items: center;
     }
-    button:hover { background-color: #b71c1c; }
-    .link-text {
-      display: block;
-      margin-top: 20px;
-      color: #d32f2f;
-      text-decoration: none;
+
+    .location i {
+      margin-right: 15px; /* Espacio entre el ícono y el texto */
+      color: #b30000; /* Rojo para el ícono de GPS */
+      font-size: 1.5rem; /* Tamaño del ícono */
+    }
+
+    .search-bar {
+      position: relative;
+      margin: 20px 10px;
+    }
+
+    .search-bar input {
+      border: 2px solid #b30000;
+      border-radius: 20px;
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+    }
+
+    .search-icon {
+      position: absolute;
+      top: 50%;
+      left: 1rem;
+      transform: translateY(-50%);
+      color: #b30000;
+      font-size: 1.2rem;
+    }
+
+    .add-icon {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #b30000;
+      font-size: 1.5rem;
+      cursor: pointer; /* Cambia el cursor al pasar sobre el ícono */
+    }
+
+    .card img {
+      border-radius: 0; /* Quitar bordes redondeados */
+      height: 115px;
+      object-fit: cover;
+    }
+
+    .card-text {
+      font-weight: bold; /* Negritas para los textos de los apartados */
+    }
+
+    footer {
+      background-color: #fff;
+      border-top: 1px solid #ccc;
+      position: fixed;  /* Fija la barra */
+            bottom: 0;       /* La coloca en la parte inferior */
+            left: 0;         /* Alineada a la izquierda */
+            width: 100%;    /* Ancho completo */
+            padding: 10px;
+            text-align: center;
+            z-index: 1000;   /* Asegura que esté por encima del resto */
+    }
+
+    footer .nav-item {
+      text-align: center;
+      color:#b30000; /* Cambiar el color del texto a rojo */
       font-size: 0.9rem;
-      text-align: center;
-      cursor: pointer;
     }
-    .link-text:hover { text-decoration: underline; }
-    .terms {
-      margin-top: 20px;
-      font-size: 0.75rem;
-      color: #666;
-      text-align: center;
-      line-height: 1.4;
+
+    footer .nav-item a {
+      color:#b30000; /* Cambiar el color de los enlaces a rojo */
+      text-decoration: none;
     }
-    .terms a { color: #d32f2f; text-decoration: none; }
-    .terms a:hover { text-decoration: underline; }
-    .hidden { display: none; }
-    .info-text {
-      font-size: 0.8rem;
-      color: #666;
-      margin: -10px 0 15px;
+
+    footer .nav-item a:hover {
+      text-decoration: underline; /* Subrayado al pasar el cursor */
     }
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255,255,255,0.3);
-      border-radius: 50%;
-      border-top-color: #fff;
-      animation: spin 1s ease-in-out infinite;
-      margin-right: 10px;
+
+    footer .nav-item i {
+      color: #b30000; /* Cambiar el color de los íconos a rojo */
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
+
+    footer .nav-item.active { /*hace que la casita se haga neegrita*/
+      color: #000000; 
+      font-weight: bold;
+    }
+   
     .alert {
-      padding: 12px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      text-align: center;
-      display: none;
-    }
-    .alert-success {
-      background-color: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
-    }
-    .alert-error {
-      background-color: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1050;
+      width: 90%;
+      max-width: 400px;
     }
   </style>
 </head>
 <body>
-  <!-- Splash bienvenida -->
-  <div class="splash" id="splash">
-    <img src="img/totus.jpeg" alt="Logo TOTUS" class="splash-logo">
-  </div>
-  <!-- Login y registro -->
-  <div class="container" id="mainContainer">
-    <!-- Login (visible por defecto) -->
-    <div class="form-section" id="loginSection">
-      <img src="img/totus.jpeg" alt="Logo TOTUS" class="logo">
-      <h2>Iniciar sesión</h2>
-      <div id="loginAlert" class="alert"></div>
-      <form id="loginForm">
-        <input type="email" id="loginEmail" placeholder="Correo electrónico" required>
-        <input type="password" id="loginPassword" placeholder="Contraseña" required>
-        <button type="submit" id="loginBtn">
-          <span class="" id="loginSpinner"></span>
-          <span id="loginText">Ingresar</span>
-        </button>
-      </form>
-      <span class="link-text" id="showRegister">¿No tienes una cuenta? Regístrate</span>
+
+  <header class="header">
+    <div class="location" style="color: #b30000;">
+      San Miguel
     </div>
-    <!-- Registro (oculto inicialmente) -->
-    <div class="form-section hidden" id="registerSection">
-      <img src="img/totus.jpeg" alt="Logo TOTUS" class="logo">
-      <h1>Registrarte</h1>
-      <p class="subtitle">TOTUS - Todo en tus manos</p>
-      <div id="registerAlert" class="alert"></div>
-      <form id="registerForm">
-        <input type="email" id="registerEmail" placeholder="Correo electrónico" required>
-        <input type="password" id="registerPassword" placeholder="Contraseña" required>
-        <button type="submit" id="registerBtn">
-          <span class="" id="registerSpinner"></span>
-          <span id="registerText">Registrarse</span>
-        </button>
-      </form>
-      <div class="terms">
-        Al registrarte, aceptas nuestros <a href="/terms">Términos de servicio</a> y <a href="/privacy">Política de privacidad</a>.
+    <div class="logo">TOTUS</div>
+  </header>
+
+  <!-- Barra de búsqueda -->
+  <div class="search-bar">
+    <form id="searchForm" action="#" onsubmit="return handleSearch(event)">
+      <i class="bi bi-search search-icon"></i>
+      <input 
+        type="text" 
+        id="searchInput"
+        class="form-control" 
+        placeholder="Cuidado, limpieza, etc..." 
+        required
+      >
+
+    </form>
+  </div>
+
+  <!-- Tarjetas de categorías -->
+  <main class="container mt-3">
+    <div class="row g-3">
+      <div class="col-6 col-md-4">
+        <a href="animales.html" class="text-decoration-none">
+          <div class="card text-center">
+            <img src="img/Animales.jpg" alt="Animales" class="card-img-top">
+            <div class="card-body">
+              <p class="card-text">Animales</p>
+            </div>
+          </div>
+        </a>
       </div>
-      <span class="link-text" id="showLogin">¿Ya tienes una cuenta? Inicia sesión</span>
+      <div class="col-6 col-md-4">
+        <a href="belleza.html" class="text-decoration-none">
+          <div class="card text-center">
+            <img src="img/belleza.jpg" alt="Belleza" class="card-img-top">
+            <div class="card-body">
+              <p class="card-text">Belleza</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-6 col-md-4">
+        <a href="compras.html" class="text-decoration-none">
+          <div class="card text-center">
+            <img src="img/Compras.jpg" alt="Compras" class="card-img-top">
+            <div class="card-body">
+              <p class="card-text">Compras</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-6 col-md-4">
+        <a href="domestico.html" class="text-decoration-none">
+          <div class="card text-center">
+            <img src="img/Domestico.jpg" alt="Doméstico" class="card-img-top">
+            <div class="card-body">
+              <p class="card-text">Doméstico</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-6 col-md-4">
+        <a href="agricultura.html" class="text-decoration-none">
+          <div class="card text-center">
+            <img src="img/Agricultura.jpg" alt="Agricultura" class="card-img-top">
+            <div class="card-body">
+              <p class="card-text">Agricultura</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-6 col-md-4">
+        <a href="mantenimiento.html" class="text-decoration-none">
+          <div class="card text-center">
+            <img src="img/Mantenimiento.jpg" alt="Mantenimiento" class="card-img-top">
+            <div class="card-body">
+              <p class="card-text">Mantenimiento</p>
+            </div>
+          </div>
+        </a>
+      </div>
     </div>
-  </div>
-  <script src="JS/index.js"> </script>
+  </main>
+
+  <!-- Footer -->
+  <footer  class="d-flex justify-content-around align-items-center p-3">
+    <div class="nav-item active">
+      <a href="Home.html">
+      <i class="bi bi-house-door-fill"></i>
+      <div>Inicio</div>
+    </a>
+    </div>
+    <div class="nav-item">
+      <a href="Formulario.html">
+       <!-- Ícono para redirigir al formulario -->
+       <i class="bi bi-file-plus " onclick="goToFormulario()"></i>
+      <div>Crear tareas</div>
+    </a>
+    </div>
+    <div class="nav-item">
+      <a href="PantallaTareas.html">
+        <i class="bi bi-clock"></i>
+        <div>Historial</div>
+      </a>
+    </div>
+    <div class="nav-item ">
+      <a href="perfil.html">
+      <i class="bi bi-person-fill"></i>
+      <div>Perfil</div>
+      </a>
+    </div>
+  </footer>
+
+  <!-- Font Awesome JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- JavaScript -->
+  <script>
+    // Función para manejar la búsqueda
+    function handleSearch(event) {
+      event.preventDefault();
+      const query = document.getElementById('searchInput').value.toLowerCase();
+
+      // Diccionario de rutas basado en el término ingresado
+      const routes = {
+        'animales': 'animales.html',
+        'belleza': 'belleza.html',
+        'compras': 'compras.html',
+        'domestico': 'domestico.html',
+        'agricultura': 'agricultura.html',
+        'mantenimiento': 'mantenimiento.html'
+      };
+
+      // Verificar si existe la ruta
+      if (routes[query]) {
+        window.location.href = routes[query];
+      } else {
+        showAlert('No se encontró un apartado para la búsqueda ingresada.');
+      }
+    }
+
+    // Mostrar alerta estilizada
+    function showAlert(message) {
+      const alertDiv = document.createElement('div');
+      alertDiv.className = 'alert alert-danger alert-dismissible fade show';
+      alertDiv.role = 'alert';
+      alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      `;
+      document.body.appendChild(alertDiv);
+
+      // Eliminar alerta automáticamente después de 4 segundos
+      setTimeout(() => {
+        alertDiv.remove();
+      }, 4000);
+    }
+
+    // Función para redirigir al formulario
+    function goToFormulario() {
+      window.location.href = "formulario.html";
+    }
+
+    // Mostrar datos del usuario en la pantalla
+    document.addEventListener('DOMContentLoaded', async () => {
+      const LOCAL_STORAGE_SESSION_KEY = 'totusCurrentUser';
+      const userData = localStorage.getItem(LOCAL_STORAGE_SESSION_KEY);
+
+      // Verificar si hay sesión activa
+      if (!userData) {
+        window.location.href = "login.html"; // Redirigir al login si no hay sesión
+        return;
+      }
+
+      // Extraer datos de la sesión
+      const session = JSON.parse(userData);
+      const now = new Date().getTime();
+
+      if (now > session.expiresAt) {
+        // Si la sesión ha expirado, redirigir al login
+        localStorage.removeItem(LOCAL_STORAGE_SESSION_KEY);
+        window.location.href = "index.html";
+        return;
+      }
+
+      // Mostrar el correo en la pantalla home
+        const userEmail = session.email;
+        const username = userEmail.split('@')[0];  // Extraer solo el nombre de usuario
+        const userSection = document.createElement('div');
+        userSection.className = 'text-center mt-3 mb-3';
+        userSection.innerHTML = `
+        <p class="fw-bold">Bienvenido, ${username}</p>
+        `;
+        document.body.insertBefore(userSection, document.body.firstChild);
+
+    });
+  </script>
 </body>
 </html>

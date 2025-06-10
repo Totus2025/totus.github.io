@@ -157,7 +157,7 @@
           // Una línea nueva de código
           localStorage.setItem('tipoUsuario', 'cliente');
 
-          setTimeout(() => { window.location.href = "home.html"; }, 1500);
+          setTimeout(() => { window.location.href = "index.html"; }, 1500);
         } else {
           showAlert(loginAlert, 'Correo o contraseña incorrectos', false);
         }
@@ -175,7 +175,7 @@
         const session = JSON.parse(userData);
         const now = new Date().getTime();
         if (now < session.expiresAt) {
-          window.location.href = "home.html";
+          window.location.href = "index.html";
         } else {
           localStorage.removeItem(LOCAL_STORAGE_SESSION_KEY);
         }
