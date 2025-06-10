@@ -305,7 +305,7 @@
       window.location.href = "formulario.html";
     }
 
-    // Mostrar datos del usuario en la pantalla
+    document.documentElement.style.visibility = 'hidden';
     document.addEventListener('DOMContentLoaded', async () => {
       const LOCAL_STORAGE_SESSION_KEY = 'totusCurrentUser';
       const userData = localStorage.getItem(LOCAL_STORAGE_SESSION_KEY);
@@ -323,31 +323,22 @@
       if (now > session.expiresAt) {
         // Si la sesión ha expirado, redirigir al login
         localStorage.removeItem(LOCAL_STORAGE_SESSION_KEY);
-        window.location.href = "index.html";
+        window.location.href = "login.html";
         return;
       }
 
       // Mostrar el correo en la pantalla home
-        const userEmail = session.email;
-        const username = userEmail.split('@')[0];  // Extraer solo el nombre de usuario
-        const userSection = document.createElement('div');
-        userSection.className = 'text-center mt-3 mb-3';
-        userSection.innerHTML = `
+      const userEmail = session.email;
+      const username = userEmail.split('@')[0];  // Extraer solo el nombre de usuario
+      const userSection = document.createElement('div');
+      userSection.className = 'text-center mt-3 mb-3';
+      userSection.innerHTML = `
         <p class="fw-bold">Bienvenido, ${username}</p>
-        `;
-        document.body.insertBefore(userSection, document.body.firstChild);
+      `;
+      document.body.insertBefore(userSection, document.body.firstChild);
 
-    });
-
-    // Evita mostrar el contenido hasta validar la sesión
-    document.documentElement.style.visibility = 'hidden';
-    document.addEventListener('DOMContentLoaded', function() {
-      const session = localStorage.getItem('totusCurrentUser');
-      if (!session) {
-        window.location.href = "login.html";
-      } else {
-        document.documentElement.style.visibility = 'visible';
-      }
+      // Mostrar el contenido solo si la sesión es válida
+      document.documentElement.style.visibility = 'visible';
     });
   </script>
 </body>
