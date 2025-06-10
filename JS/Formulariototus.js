@@ -80,7 +80,7 @@ document.getElementById('formTotu').addEventListener('submit', async function(e)
 
     const experiencia = this.experiencia.value.trim();
     const direccion = this.direccion.value.trim();
-    const horario = this.horario.value.trim();
+   
 
     const nuevoTrabajador = {
       nombre,
@@ -94,7 +94,6 @@ document.getElementById('formTotu').addEventListener('submit', async function(e)
       trabajosExtra,
       experiencia,
       direccion,
-      horario
     };
 
     try {
