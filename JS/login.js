@@ -175,7 +175,7 @@
         const session = JSON.parse(userData);
         const now = new Date().getTime();
         if (now < session.expiresAt) {
-          window.location.href = "home.html";
+          window.location.href = "index.html";
         } else {
           localStorage.removeItem(LOCAL_STORAGE_SESSION_KEY);
         }
