@@ -1,12 +1,10 @@
-// Mostrar solo el resumen si los datos existen PARA EL USUARIO ACTUAL
 window.onload = function() {
-  // Leer la sesión para obtener el userId o email único del usuario
   const session = JSON.parse(localStorage.getItem('totusCurrentUser') || '{}');
   const userId = session.userId || session.email;
-  if (!userId) return; // Si no hay usuario, no hace nada
+  if (!userId) return;
 
   const datos = JSON.parse(localStorage.getItem(`datosPersonales_${userId}`));
-  if (datos && datos.nombre && datos.apellido && datos.tarjeta && datos.fecha) {
+  if (datos && datos.nombre && datos.apellido && datos.cuenta && datos.dui && datos.fecha) {
     document.getElementById("formulario").style.display = "none";
     mostrarResumen(datos);
   }
@@ -16,27 +14,32 @@ function goBack() {
   window.history.back();
 }
 
-function maskInput(event) {
+// Censura la cuenta bancaria en el input mientras la escriben
+function maskCuenta(event) {
   let input = event.target;
   let rawValue = input.dataset.raw || "";
   let newChar = event.data || "";
-  if (/^\d$/.test(newChar) && rawValue.length < 16) {
+
+  // Permite solo dígitos, máximo 22
+  if (/^\d$/.test(newChar) && rawValue.length < 22) {
     rawValue += newChar;
   } else if (event.inputType === "deleteContentBackward") {
     rawValue = rawValue.slice(0, -1);
   }
   input.dataset.raw = rawValue;
-  input.value = rawValue.length >= 16 ? "************" + rawValue.slice(-4) : rawValue;
+
+  // Mostrar censurado menos últimos 4 dígitos
+  if (rawValue.length > 4) {
+    input.value = "*".repeat(rawValue.length - 4) + rawValue.slice(-4);
+  } else {
+    input.value = rawValue;
+  }
 }
 
-function formatDate(event) {
+function formatDUI(event) {
   let input = event.target;
-  let value = input.value.replace(/\D/g, "").slice(0, 8);
-  if (value.length >= 4) {
-    value = value.slice(0, 2) + "/" + value.slice(2, 4) + "/" + value.slice(4);
-  } else if (value.length >= 2) {
-    value = value.slice(0, 2) + "/" + value.slice(2);
-  }
+  let value = input.value.replace(/\D/g, '').slice(0, 9);
+  if (value.length > 8) value = value.slice(0, 8) + '-' + value.slice(8);
   input.value = value;
 }
 
@@ -61,15 +64,33 @@ function customAlert({title, message, type = 'error', buttonText = 'Aceptar', on
   }
 }
 
+function fechaToMostrar(fechaIso) {
+  if (!fechaIso) return "";
+  const [year, month, day] = fechaIso.split("-");
+  return `${day}/${month}/${year}`;
+}
+function fechaToInput(fecha) {
+  if (!fecha) return "";
+  const [dd, mm, yyyy] = fecha.split("/");
+  return `${yyyy}-${mm.padStart(2, "0")}-${dd.padStart(2, "0")}`;
+}
+
 function enviar() {
   let nombre = document.getElementById("nombre").value.trim();
   let apellido = document.getElementById("apellido").value.trim();
-  let tarjeta = document.getElementById("tarjeta").dataset.raw || "";
-  let fecha = document.getElementById("fecha").value.trim();
+  let cuenta = document.getElementById("cuenta").dataset.raw || "";
+  let dui = document.getElementById("dui").value.trim();
+  let fecha = document.getElementById("fecha").value;
 
-  // Leer sesión y userId
   const session = JSON.parse(localStorage.getItem('totusCurrentUser') || '{}');
   const userId = session.userId || session.email;
+
+  let camposFaltantes = [];
+  if (!nombre) camposFaltantes.push("nombre");
+  if (!apellido) camposFaltantes.push("apellido");
+  if (!cuenta) camposFaltantes.push("cuenta bancaria");
+  if (!dui) camposFaltantes.push("DUI");
+  if (!fecha) camposFaltantes.push("fecha de nacimiento");
 
   if (!userId) {
     customAlert({
@@ -80,46 +101,59 @@ function enviar() {
     return;
   }
 
-  if (!nombre || !apellido) {
+  if (camposFaltantes.length > 0) {
     customAlert({
       title: "Campos obligatorios",
-      message: "Por favor completa tu nombre y apellido.",
+      message: "Por favor completa los siguientes campos: " + camposFaltantes.join(", ") + ".",
       type: "error"
     });
     return;
   }
-  if (tarjeta.length !== 16 || !/^\d+$/.test(tarjeta)) {
+  if (cuenta.length < 8 || !/^\d+$/.test(cuenta)) {
     customAlert({
-      title: "Tarjeta inválida",
-      message: "La tarjeta debe tener exactamente 16 dígitos numéricos.",
+      title: "Cuenta bancaria inválida",
+      message: "La cuenta bancaria debe tener al menos 8 dígitos numéricos.",
       type: "error"
     });
     return;
   }
-  if (!fecha.match(/^\d{1,2}\/\d{1,2}\/\d{4}$/)) {
+  if (!/^\d{8}-\d$/.test(dui)) {
     customAlert({
-      title: "Fecha inválida",
-      message: "Formato de fecha incorrecto. Usa DD/MM/AAAA.",
+      title: "DUI inválido",
+      message: "Formato de DUI incorrecto. Usa ########-#.",
       type: "error"
     });
     return;
   }
-  // Guardar en localStorage usando una clave única por usuario
+
+  // Guardar fecha en formato DD/MM/AAAA
+  let fechaFormateada = "";
+  if (fecha) {
+    const [yyyy, mm, dd] = fecha.split("-");
+    fechaFormateada = `${dd}/${mm}/${yyyy}`;
+  }
+
   localStorage.setItem(`datosPersonales_${userId}`, JSON.stringify({
     nombre,
     apellido,
-    tarjeta,
-    fecha
+    cuenta,
+    dui,
+    fecha: fechaFormateada
   }));
-  // Mostrar información y ocultar formulario
   document.getElementById("formulario").style.display = "none";
-  mostrarResumen({ nombre, apellido, tarjeta, fecha });
+  mostrarResumen({ nombre, apellido, cuenta, dui, fecha: fechaFormateada });
 }
 
 function mostrarResumen(datos) {
   document.getElementById("resNombre").innerText = datos.nombre;
   document.getElementById("resApellido").innerText = datos.apellido;
-  document.getElementById("resTarjeta").innerText = "************" + datos.tarjeta.slice(-4);
+  // Censura todo menos los últimos 4 dígitos
+  const cuenta = datos.cuenta || "";
+  let cuentaCensurada = cuenta.length > 4
+    ? "*".repeat(cuenta.length - 4) + cuenta.slice(-4)
+    : cuenta;
+  document.getElementById("resCuenta").innerText = cuentaCensurada;
+  document.getElementById("resDUI").innerText = datos.dui;
   document.getElementById("resFecha").innerText = datos.fecha;
   document.getElementById("resumen").style.display = "block";
 }
@@ -131,4 +165,26 @@ function regresarPerfil() {
   } else {
     location.href = 'perfil.html';
   }
+}
+
+function editarInformacion() {
+  const session = JSON.parse(localStorage.getItem('totusCurrentUser') || '{}');
+  const userId = session.userId || session.email;
+  if (!userId) return;
+  const datos = JSON.parse(localStorage.getItem(`datosPersonales_${userId}`));
+  if (!datos) return;
+  document.getElementById("nombre").value = datos.nombre || "";
+  document.getElementById("apellido").value = datos.apellido || "";
+  // Cargar la cuenta censurada y el valor real en data-raw
+  const cuentaInput = document.getElementById("cuenta");
+  cuentaInput.dataset.raw = datos.cuenta || "";
+  if ((datos.cuenta || "").length > 4) {
+    cuentaInput.value = "*".repeat(datos.cuenta.length - 4) + datos.cuenta.slice(-4);
+  } else {
+    cuentaInput.value = datos.cuenta || "";
+  }
+  document.getElementById("dui").value = datos.dui || "";
+  document.getElementById("fecha").value = fechaToInput(datos.fecha || "");
+  document.getElementById("formulario").style.display = "block";
+  document.getElementById("resumen").style.display = "none";
 }
