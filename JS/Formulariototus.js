@@ -1,40 +1,18 @@
-// Configura tu ID y API Key de JSONBin aquí (cambia por los tuyos)
+// ID y API Key de JSONBin 
 const JSONBIN_BIN_ID = '682a68838960c979a59c6d65'; 
 const JSONBIN_API_KEY = '$2a$10$CT888X18GRmHBcV11efmxe.3Q1SsEppgTzBpNcboYWuNuKZGQR/P6';
 
-// Funciones para cambiar de paso
-function nextStep() {
-  const step1Inputs = document.querySelectorAll('#step1 input');
-  let valid = true;
-  step1Inputs.forEach(input => {
-    if (!input.checkValidity()) valid = false;
-  });
-
-  if (valid) {
-    document.getElementById('step1').classList.remove('active');
-    document.getElementById('step2').classList.add('active');
-    window.scrollTo(0, 0);
-  } else {
-    document.getElementById('formTotu').reportValidity();
-  }
-}
-
-function prevStep() {
-  document.getElementById('step2').classList.remove('active');
-  document.getElementById('step1').classList.add('active');
-  window.scrollTo(0, 0);
-}
-
-function backFromStep1() {
-  window.location = "perfil.html";
-}
-
-// Alerta para mostrar cuando el formulario se envía correctamente
 function showFormAlert(message) {
   const container = document.getElementById('formAlertContainer');
   container.innerHTML = `
-    <div class="alert alert-success alert-dismissible fade show" role="alert" style="box-shadow:0 4px 12px rgba(0,0,0,0.13);">
-      <strong>${message}</strong>
+    <div class="alert alert-success alert-dismissible fade show" role="alert" style="box-shadow:0 4px 12px rgba(0,0,0,0.13);font-size:1.1em;">
+      <div style="display:flex;align-items:center;">
+        <span style="font-size:1.5em;margin-right:10px;">🎉</span>
+        <span>
+        <strong>¡Listo!</strong><br>
+        ${message}
+        </span>
+      </div>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
     </div>
   `;
@@ -63,37 +41,28 @@ checkboxes.forEach(checkbox => {
 document.getElementById('formTotu').addEventListener('submit', async function(e) {
   e.preventDefault();
 
-  if (this.checkValidity()) {
-    const nombre = this.nombre.value.trim();
-    const apellido = this.apellido.value.trim();
-    const nacimiento = this.nacimiento.value;
-    const dui = this.dui.value.trim();
-    const cuenta = this.cuenta.value.trim();
-    const correo = this.correo.value.trim();
-    const telefono = this.telefono.value.trim();
-    const categoriaPrincipal = this.categoriaPrincipal.value;
+  // Botón de enviar y loader
+  const submitBtn = this.querySelector('button[type="submit"]');
+  const originalBtnContent = submitBtn.innerHTML;
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Enviando...`;
 
+  if (this.checkValidity()) {
+    const categoriaPrincipal = this.categoriaPrincipal.value;
     const trabajosExtra = [];
     document.querySelectorAll('#trabajosExtraContainer input[type="checkbox"]:checked').forEach(cb => {
       trabajosExtra.push(cb.value);
     });
-
     const experiencia = this.experiencia.value.trim();
     const direccion = this.direccion.value.trim();
-   
+    const horario = this.horario.value.trim();
 
     const nuevoTrabajador = {
-      nombre,
-      apellido,
-      nacimiento,
-      dui,
-      cuenta,
-      correo,
-      telefono,
       categoriaPrincipal,
       trabajosExtra,
       experiencia,
       direccion,
+      horario
     };
 
     try {
@@ -122,34 +91,43 @@ document.getElementById('formTotu').addEventListener('submit', async function(e)
 
       if (!putResponse.ok) throw new Error('Error guardando datos en JSONBin');
 
-      const putResult = await putResponse.json();
-      console.log('Datos guardados:', putResult);
-
       showFormAlert('¡Formulario realizado con éxito!');
       this.reset();
-      document.getElementById('step2').classList.remove('active');
-      document.getElementById('step1').classList.add('active');
-      window.scrollTo(0, 0);
 
-      // Guarda las categorías elegidas en el usuario logueado
-      const usuarioActualizado = {
-        ...JSON.parse(localStorage.getItem('totusCurrentUser')),
-        categoriaPrincipal,
-        trabajosExtra
-      };
-      localStorage.setItem('totusCurrentUser', JSON.stringify(usuarioActualizado));
-
-      localStorage.setItem('tipoUsuario', 'trabajador');
+      // actualiza al usuario como trabajador
+      try {
+        let usuarioActual = localStorage.getItem('totusCurrentUser');
+        if (usuarioActual) {
+          usuarioActual = JSON.parse(usuarioActual);
+          const usuarioActualizado = {
+            ...usuarioActual,
+            categoriaPrincipal,
+            trabajosExtra
+          };
+          localStorage.setItem('totusCurrentUser', JSON.stringify(usuarioActualizado));
+          localStorage.setItem('tipoUsuario', 'trabajador');
+        }
+      } catch (error) {
+        // Si hay problema con el localStorage, no bloquea el flujo
+        console.error('Error actualizando usuario logueado:', error);
+      }
+      
 
       setTimeout(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnContent;
         window.location = "Hometotus.html";
-      }, 1700);
+      }, 1800);
 
     } catch (error) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalBtnContent;
       console.error('Error guardando en JSONBin:', error);
       alert('Error al guardar los datos, revisa la consola.');
     }
   } else {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = originalBtnContent;
     this.reportValidity();
   }
 });
