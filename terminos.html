@@ -10,7 +10,7 @@
     body {
       font-family: 'Inter', sans-serif;
     }
-    .white-arrow {
+    .header-arrow {
       position: fixed;
       top: 18px;
       left: 18px;
@@ -21,36 +21,37 @@
       display: flex;
       align-items: center;
     }
-    .white-arrow svg {
-      width: 34px;
-      height: 34px;
+    .header-arrow svg {
+      width: 36px;
+      height: 28px;
       display: block;
     }
     @media (max-width: 600px) {
-      .white-arrow {
+      .header-arrow {
         top: 8px;
         left: 8px;
       }
-      .white-arrow svg {
+      .header-arrow svg {
         width: 24px;
-        height: 24px;
+        height: 20px;
       }
     }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-  <!-- Flecha como enlace sin JS -->
-  <a href="soporteTecnico.html" class="white-arrow" aria-label="soporte tecnico ">
-    <svg viewBox="0 0 32 32">
-      <polyline points="20,6 12,16 20,26" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Flecha SVG ancha y roja, posicionada fija arriba a la izquierda -->
+  <a href="soporteTecnico.html" class="header-arrow" aria-label="soporte tecnico">
+    <svg width="36" height="28" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15 6L7 14L15 22" stroke="#c40000" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="7" y="13" width="22" height="2.5" rx="1.2" fill="#c40000"/>
     </svg>
   </a>
 
-  <!-- Encabezado rojo con texto blanco -->
-  <header class="bg-[#b30000] shadow">
+  <!-- Encabezado limpio, solo texto, sin marco rojo -->
+  <header class="shadow">
     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-      <h1 class="text-3xl font-bold text-white text-center">Términos y Condiciones</h1>
+      <h1 class="text-3xl font-bold text-gray-900 text-center" style="color: #c40000;">Términos y Condiciones</h1>
     </div>
   </header>
 

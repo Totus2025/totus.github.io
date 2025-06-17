@@ -12,27 +12,40 @@
       margin: 0;
       padding: 0;
     }
-    .top-bar {
-      background-color: #b30000;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-      font-size: 18px;
-      font-weight: 600;
-    }
     .container {
       background-color: #fff;
       padding: 1.5rem;
-      margin: 1.5rem auto;
+      margin: 2rem auto;
       max-width: 500px;
       border-radius: 16px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      position: relative;
+      min-height: 440px;
+    }
+    .header-arrow {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      z-index: 10;
+    }
+    .header-arrow svg {
+      width: 36px;
+      height: 28px;
+      display: block;
     }
     h2 {
-      color: #333;
+      color: #b30000;
       text-align: center;
       margin-bottom: 1rem;
-      font-size: 20px;
+      font-size: 22px;
+      margin-top: 0;
+      font-weight: 600;
     }
     p {
       font-size: 14px;
@@ -60,54 +73,38 @@
     a:hover {
       text-decoration: underline;
     }
-    /* Flecha fija blanca */
-    .white-arrow {
-      position: fixed;
-      top: 18px;
-      left: 18px;
-      z-index: 1000;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      /* Sin animaciones, sin movimiento */
-    }
-    .white-arrow svg {
-      width: 34px;
-      height: 34px;
-      display: block;
-    }
     @media (max-width: 600px) {
       .container {
         margin: 1rem;
         padding: 1.2rem;
+        min-height: 340px;
       }
-      .top-bar {
-        font-size: 16px;
-      }
-      .white-arrow {
+      .header-arrow {
         top: 8px;
         left: 8px;
       }
-      .white-arrow svg {
-        width: 24px;
-        height: 24px;
+      .header-arrow svg {
+        width: 26px;
+        height: 20px;
+      }
+      h2 {
+        font-size: 18px;
+      }
+      .section-title {
+        font-size: 15px;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Flecha blanca SVG fija -->
-  <button class="white-arrow" onclick="location.href='pantallaPerfil.html'" aria-label="Regresar al perfil">
-    <svg viewBox="0 0 32 32">
-      <polyline points="20,6 12,16 20,26" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </button>
-
-  <div class="top-bar">Centro de Ayuda TOTUS</div>
   <div class="container">
+    <!-- Flecha SVG ancha y roja, dentro del cuadro -->
+    <button class="header-arrow" onclick="location.href='pantallaPerfil.html'" aria-label="Regresar al perfil">
+      <svg width="36" height="28" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 6L7 14L15 22" stroke="#c40000" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="7" y="13" width="22" height="2.5" rx="1.2" fill="#c40000"/>
+      </svg>
+    </button>
     <h2>SOPORTE TÉCNICO</h2>
     <p>¿Necesitas resolver una duda sobre nuestros servicios o cómo convertirte en TOTUS? Nuestro equipo de soporte técnico está listo para ayudarte.</p>
     <p>Correo: <span class="highlight">totussoportetecnico@gmail.com</span></p>

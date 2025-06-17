@@ -32,7 +32,7 @@
       border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       text-align: center;
-      
+      position: relative;
     }
 
     .back-button {
@@ -41,10 +41,13 @@
       left: 15px;
       background: none;
       border: none;
-      font-size: 36px;
-      font-weight: bold;
-      color: #c40000;
+      padding: 0;
+      margin: 0;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* Remove font-size/color to avoid interfering with SVG */
     }
 
     h1 {
@@ -127,16 +130,14 @@
       margin-top: 10px;
     }
 
-
-      select,
-      textarea,
-      input[type="text"],
-      .small-button,
-      .publicar-btn {
-        font-size: 12px;
-        padding: 8px;
-      }
-  
+    select,
+    textarea,
+    input[type="text"],
+    .small-button,
+    .publicar-btn {
+      font-size: 12px;
+      padding: 8px;
+    }
 
     .overlay {
       position: fixed;
@@ -196,7 +197,13 @@
 </head>
 <body>
   <div class="container">
-    <button class="back-button" onclick="confirmBack()">&larr;</button>
+    <!-- Nueva flecha SVG ancha y roja, responsive y alineable con Bootstrap -->
+    <button class="back-button" type="button" onclick="confirmBack()" aria-label="Volver">
+      <svg width="36" height="28" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 6L7 14L15 22" stroke="#c40000" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="7" y="13" width="22" height="2.5" rx="1.2" fill="#c40000"/>
+      </svg>
+    </button>
     <h1>Registro de servicio</h1>
     <p class="subtitulo">Selecciona la categoría que usted desea</p>
 
@@ -245,9 +252,7 @@
     </form>
   </div>
 
-
   <!-- Confirmar para regresar -->
-
   <div class="overlay" id="overlay">
     <div class="dialog">
       <p>¿Estás seguro que deseas ir al inicio?</p>
@@ -257,7 +262,5 @@
   </div>
   <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
   <script src="JS/Formulario.js"></script>
-
- 
 </body>
 </html>
