@@ -144,7 +144,7 @@ document.addEventListener('click', function(e) {
             },
             body: JSON.stringify({ servicios: todasLasTareas })
           }).then(() => {
-            window.location.href = "historialTotus.html";
+            window.location.href = "historialtotus.html";
           });
         }
       });
