@@ -29,7 +29,6 @@
       position: relative;
     }
     .back-arrow {
-      /* Eliminamos el contenido de flecha porque ahora usamos SVG */
       cursor: pointer;
       margin-right: 10px;
       background: none;
@@ -173,6 +172,10 @@
     #resumen p {
       font-size: 16px;
       margin: 12px 0;
+      font-weight: normal; /* Texto normal, NO negrita */
+    }
+    #resumen .res-label {
+      font-weight: bold; /* Solo la etiqueta en negrita */
     }
     .resumen-back-arrow {
       position: absolute;
@@ -190,7 +193,6 @@
     .resumen-back-arrow:hover {
       color: #a00e26;
     }
-    /* Botón editar estilo enlace */
     .edit-btn {
       position: absolute;
       top: 18px;
@@ -247,11 +249,11 @@
     </button>
     <button class="edit-btn" onclick="editarInformacion()" title="Editar información personal">Editar</button>
     <h2>Información Personal</h2>
-    <p><b>Nombre(s):</b> <span id="resNombre"></span></p>
-    <p><b>Apellido(s):</b> <span id="resApellido"></span></p>
-    <p><b>Cuenta bancaria:</b> <span id="resCuenta"></span></p>
-    <p><b>DUI:</b> <span id="resDUI"></span></p>
-    <p><b>Fecha de nacimiento:</b> <span id="resFecha"></span></p>
+    <p><span class="res-label">Nombre(s):</span> <span id="resNombre"></span></p>
+    <p><span class="res-label">Apellido(s):</span> <span id="resApellido"></span></p>
+    <p><span class="res-label">Cuenta bancaria:</span> <span id="resCuenta"></span></p>
+    <p><span class="res-label">DUI:</span> <span id="resDUI"></span></p>
+    <p><span class="res-label">Fecha de nacimiento:</span> <span id="resFecha"></span></p>
   </div>
   <div id="customAlert" style="display:none;"></div>
   <script src="JS/informacionPerfilP.js"></script>

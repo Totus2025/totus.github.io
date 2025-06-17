@@ -23,69 +23,41 @@
       font-size: 1.5rem;
       color: #b30000 ;
     }
-  footer {
+    footer {
       background-color: #f8f9fa;
       border-top: 1px solid #dee2e6;
       background-color: #fff;
-      position: fixed;  /* Fija la barra */
-            bottom: 0;       /* La coloca en la parte inferior */
-            left: 0;         /* Alineada a la izquierda */
-            width: 100%;    /* Ancho completo */
-            padding: 10px;
-            text-align: center;
-            z-index: 1000;   /* Asegura que esté por encima del resto */
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 10px;
+      text-align: center;
+      z-index: 1000;
     }
-
     footer .nav-item {
       text-align: center;
       flex: 1;
     }
-
     footer .nav-item a {
-      color:  #b30000; /* Cambiar el color de las letras del footer a rojo */
+      color:  #b30000;
       text-decoration: none;
     }
-
     footer .nav-item a:hover {
-      text-decoration: underline; /* Subrayado al pasar el cursor */
+      text-decoration: underline;
     }
-
     footer .nav-item i {
-      color:  #b30000; /* Cambiar el color de los íconos del footer a rojo */
+      color:  #b30000;
     }
-
-    
-      footer .nav-item.active { /*hace que el icono se haga rojita*/
-      color: #000000; 
+    footer .nav-item.active {
+      color: #000000;
       font-weight: bold;
-    
     }
-
     .avatar-container {
       position: relative;
       display: inline-block;
       margin-bottom: 15px;
     }
-
-    .avatar-container img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover; /* Ajusta la imagen para que no se deforme */
-      border: 2px solid  #b30000;
-    }
-
-    .avatar-upload {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      background-color: #fff;
-      border-radius: 50%;
-      padding: 5px;
-      cursor: pointer;
-    }
-
-
     .avatar-container img {
       width: 120px;
       height: 120px;
@@ -93,21 +65,25 @@
       object-fit: cover;
       border: 2px solid  #b30000;
     }
+    /* Quitamos el círculo blanco del ícono de la cámara */
     .avatar-upload {
       position: absolute;
       bottom: 0;
       right: 0;
-      background-color: #fff;
-      border-radius: 50%;
-      padding: 5px;
+      /* background-color: #fff;  Eliminado */
+      /* border-radius: 50%;      Eliminado */
+      padding: 0;                /* Sin padding extra */
       cursor: pointer;
+      line-height: 1;
     }
     .avatar-upload i {
-      font-size: 1.2rem;
+      font-size: 1.7rem;
       color:  #b30000;
+      background: none;
+      box-shadow: none;
     }
     .menu-item {
-      color:  #b30000
+      color:  #b30000;
     }
     .menu-item i {
       color:  #b30000;
@@ -157,7 +133,7 @@
     }
     @media (max-width: 768px) {
       .container {
-        padding-bottom: 80px !important; /* Para no tapar contenido con el footer en móvil */
+        padding-bottom: 80px !important;
       }
       .footer-nav .nav-link {
         font-size: 0.9rem;
@@ -172,6 +148,9 @@
         height: 90px;
       }
       .header h1 {
+        font-size: 1.2rem;
+      }
+      .avatar-upload i {
         font-size: 1.2rem;
       }
     }
@@ -199,8 +178,7 @@
       <li class="list-group-item d-flex align-items-center menu-item">
         <i class="bi bi-person me-3"></i>
         <a href="informacionPersonal.html" class="text-decoration-none">Información personal</a>
-      </li><!-- si lo cambie-->
-    
+      </li>
       <li class="list-group-item d-flex align-items-center menu-item">
         <i class="bi bi-question-circle me-3"></i>
         <a href="soporteTecnicototus.html" class="text-decoration-none">Centro de ayuda</a>
@@ -211,34 +189,31 @@
       </li>
     </ul>
 
-    
-
   <!-- Pie de página tipo barra de navegación -->
   <footer>
-  <nav class="footer-nav">
-    <ul class="nav">
-      <li class="nav-item">
-        <a class="nav-link d-flex flex-column align-items-center" href="Hometotus.html">
-          <i class="bi bi-house-fill"></i>
-          <span>Inicio</span>
-        </a>
-      </li>
+    <nav class="footer-nav">
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link d-flex flex-column align-items-center" href="Hometotus.html">
+            <i class="bi bi-house-fill"></i>
+            <span>Inicio</span>
+          </a>
+        </li>
         <div class="nav-item">
-        <a href="historialtotus.html">
-        <i class="bi bi-clock"></i>
-        <div>Historial</div>
-       </a>
+          <a href="historialtotus.html">
+            <i class="bi bi-clock"></i>
+            <div>Historial</div>
+          </a>
         </div>
-
-      <li class="nav-item">
-        <a class="nav-link d-flex flex-column align-items-center active" href="pantallaPerfil.html">
-          <i class="bi bi-person-circle"></i>
-          <span>Perfil</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
-</footer>
+        <li class="nav-item">
+          <a class="nav-link d-flex flex-column align-items-center active" href="pantallaPerfil.html">
+            <i class="bi bi-person-circle"></i>
+            <span>Perfil</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </footer>
    <!-- Modal de confirmación -->
   <div class="confirmation-modal" id="confirmationModal">
     <p>¿Estás seguro que deseas cerrar sesión?</p>

@@ -80,19 +80,26 @@
       border: 2px solid  #b30000;
     }
 
+    /* Quitamos el círculo blanco del ícono de la cámara */
     .avatar-upload {
       position: absolute;
       bottom: 0;
       right: 0;
-      background-color: #fff;
-      border-radius: 50%;
-      padding: 5px;
+      /* background-color: #fff;  <--- Eliminado */
+      /* border-radius: 50%;      <--- Eliminado */
+      padding: 0;                /* Sin padding extra */
       cursor: pointer;
+      line-height: 1;
+      /* Opcional: Agregar un leve fondo transparente si quieres visibilidad sobre cualquier foto */
+      /* background: rgba(255,255,255,0.5); border-radius: 6px; */
     }
-
     .avatar-upload i {
-      font-size: 1.2rem;
+      font-size: 1.7rem;
       color:  #b30000;
+      background: none;
+      box-shadow: none;
+      /* Opcional: agregar sombra leve si la imagen es muy clara de fondo */
+      /* text-shadow: 0 1px 2px #fff, 0 1px 6px #b3000055; */
     }
 
     /* Estilo para los apartados del menú */
