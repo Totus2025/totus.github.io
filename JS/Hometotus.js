@@ -121,7 +121,7 @@ document.addEventListener('click', function(e) {
             descripcion: tarea.descripcion,
             direccion: tarea.direccion,
             presupuesto: tarea.presupuesto,
-            estado: "Aceptada", // <-- Consistente con el JSON Bin
+            estado: "Aceptada",
             uid: uid,
             telefono: tarea.telefono || '',
             latitud: tarea.latitud || '',
@@ -130,6 +130,11 @@ document.addEventListener('click', function(e) {
           tareasAceptadas.push(nuevaTarea);
           usuarioActual.tareasAceptadas = tareasAceptadas;
           localStorage.setItem('totusCurrentUser', JSON.stringify(usuarioActual));
+          // --- AGREGA ESTO ---
+          let tareasAceptadasGlobal = JSON.parse(localStorage.getItem('tareasAceptadas')) || [];
+          tareasAceptadasGlobal.push(nuevaTarea);
+          localStorage.setItem('tareasAceptadas', JSON.stringify(tareasAceptadasGlobal));
+          // -------------------
           // Cambia el estado en el array de todasLasTareas
           tarea.estado = "Aceptada"; // <-- Aquí también
 
