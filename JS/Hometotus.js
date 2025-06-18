@@ -127,7 +127,7 @@ document.addEventListener('click', function(e) {
               descripcion: tarea.descripcion,
               direccion: tarea.direccion,
               presupuesto: tarea.presupuesto,
-              estado: "Aceptada",
+              estado: "pendiente",
               uid: uid,
               telefono: tarea.telefono || '',
               latitud: tarea.latitud || '',
