@@ -35,10 +35,18 @@
       position: relative;
     }
 
+    /* Header flex para flecha y título */
+    .header-flex {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 5px;
+      justify-content: flex-start;
+      width: 100%;
+      text-align: left;
+    }
+
     .back-button {
-      position: absolute;
-      top: 15px;
-      left: 15px;
       background: none;
       border: none;
       padding: 0;
@@ -47,19 +55,23 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      /* Remove font-size/color to avoid interfering with SVG */
+      position: static;
     }
 
     h1 {
       font-size: 24px;
       color: #c40000;
-      margin-bottom: 5px;
+      margin: 0;
+      /* margin-bottom se gestiona desde .header-flex */
+      text-align: left;
     }
 
     .subtitulo {
       font-size: 14px;
       color: #777;
       margin-bottom: 20px;
+      margin-top: 10px;
+      text-align: left;
     }
 
     select {
@@ -193,18 +205,40 @@
     .dialog .btn-cancel {
       background-color: #ddd;
     }
+
+    /* Responsive: Header (flecha y título) en móviles */
+    @media (max-width: 500px) {
+      .header-flex {
+        gap: 8px;
+      }
+      h1 {
+        font-size: 18px;
+      }
+      .container {
+        padding: 18px 5px;
+      }
+      .back-button svg {
+        width: 28px !important;
+        height: 24px !important;
+      }
+      .subtitulo {
+        font-size: 12px;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Nueva flecha SVG ancha y roja, responsive y alineable con Bootstrap -->
-    <button class="back-button" type="button" onclick="confirmBack()" aria-label="Volver">
-      <svg width="36" height="28" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 6L7 14L15 22" stroke="#c40000" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
-        <rect x="7" y="13" width="22" height="2.5" rx="1.2" fill="#c40000"/>
-      </svg>
-    </button>
-    <h1>Registro de servicio</h1>
+    <!-- Header flexible: flecha y título alineados a la par -->
+    <div class="header-flex">
+      <button class="back-button" type="button" onclick="confirmBack()" aria-label="Volver">
+        <svg width="36" height="28" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 6L7 14L15 22" stroke="#c40000" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="7" y="13" width="22" height="2.5" rx="1.2" fill="#c40000"/>
+        </svg>
+      </button>
+      <h1>Registro de servicio</h1>
+    </div>
     <p class="subtitulo">Selecciona la categoría que usted desea</p>
 
     <select id="categoria">
