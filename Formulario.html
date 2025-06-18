@@ -35,15 +35,13 @@
       position: relative;
     }
 
-    /* Header flex para flecha y título */
+    /* Header flex para flecha y título centrado */
     .header-flex {
       display: flex;
       align-items: center;
-      gap: 12px;
+      justify-content: space-between;
       margin-bottom: 5px;
-      justify-content: flex-start;
       width: 100%;
-      text-align: left;
     }
 
     .back-button {
@@ -55,15 +53,29 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      position: static;
+      width: 36px;
+      height: 28px;
     }
 
-    h1 {
+    .header-title {
+      flex: 1;
+      text-align: center;
       font-size: 24px;
       color: #c40000;
       margin: 0;
-      /* margin-bottom se gestiona desde .header-flex */
-      text-align: left;
+      font-weight: 600;
+      line-height: 1;
+      /* Evita que el título se superponga con la flecha */
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .header-spacer {
+      width: 36px;
+      height: 28px;
+      /* Igual que la flecha para centrar perfectamente */
+      flex-shrink: 0;
     }
 
     .subtitulo {
@@ -209,15 +221,16 @@
     /* Responsive: Header (flecha y título) en móviles */
     @media (max-width: 500px) {
       .header-flex {
-        gap: 8px;
+        gap: 4px;
       }
-      h1 {
+      .header-title {
         font-size: 18px;
       }
       .container {
         padding: 18px 5px;
       }
-      .back-button svg {
+      .back-button svg,
+      .header-spacer {
         width: 28px !important;
         height: 24px !important;
       }
@@ -229,7 +242,6 @@
 </head>
 <body>
   <div class="container">
-    <!-- Header flexible: flecha y título alineados a la par -->
     <div class="header-flex">
       <button class="back-button" type="button" onclick="confirmBack()" aria-label="Volver">
         <svg width="36" height="28" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -237,7 +249,8 @@
           <rect x="7" y="13" width="22" height="2.5" rx="1.2" fill="#c40000"/>
         </svg>
       </button>
-      <h1>Registro de servicio</h1>
+      <h1 class="header-title">Registro de servicio</h1>
+      <div class="header-spacer"></div>
     </div>
     <p class="subtitulo">Selecciona la categoría que usted desea</p>
 
