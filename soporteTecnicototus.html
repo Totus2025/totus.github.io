@@ -22,30 +22,42 @@
       position: relative;
       min-height: 440px;
     }
+    /* Header flexible para flecha y título centrado */
+    .header-flex {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      width: 100%;
+      position: relative;
+    }
     .header-arrow {
-      position: absolute;
-      top: 18px;
-      left: 18px;
       background: none;
       border: none;
       cursor: pointer;
       padding: 0;
       display: flex;
       align-items: center;
-      z-index: 10;
-    }
-    .header-arrow svg {
       width: 36px;
       height: 28px;
-      display: block;
+      flex-shrink: 0;
     }
-    h2 {
-      color: #b30000;
+    .header-title {
+      flex: 1;
       text-align: center;
-      margin-bottom: 1rem;
+      color: #b30000;
       font-size: 22px;
-      margin-top: 0;
       font-weight: 600;
+      margin: 0;
+      line-height: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .header-spacer {
+      width: 36px;
+      height: 28px;
+      flex-shrink: 0;
     }
     p {
       font-size: 14px;
@@ -79,15 +91,12 @@
         padding: 1.2rem;
         min-height: 340px;
       }
-      .header-arrow {
-        top: 8px;
-        left: 8px;
+      .header-arrow,
+      .header-spacer {
+        width: 26px !important;
+        height: 20px !important;
       }
-      .header-arrow svg {
-        width: 26px;
-        height: 20px;
-      }
-      h2 {
+      .header-title {
         font-size: 18px;
       }
       .section-title {
@@ -98,14 +107,17 @@
 </head>
 <body>
   <div class="container">
-    <!-- Flecha SVG ancha y roja, dentro del cuadro -->
-    <button class="header-arrow" onclick="location.href='pantallaPerfil.html'" aria-label="Regresar al perfil">
-      <svg width="36" height="28" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 6L7 14L15 22" stroke="#c40000" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
-        <rect x="7" y="13" width="22" height="2.5" rx="1.2" fill="#c40000"/>
-      </svg>
-    </button>
-    <h2>SOPORTE TÉCNICO</h2>
+    
+    <div class="header-flex">
+      <button class="header-arrow" onclick="location.href='pantallaPerfil.html'" aria-label="Regresar al perfil">
+        <svg width="36" height="28" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 6L7 14L15 22" stroke="#c40000" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="7" y="13" width="22" height="2.5" rx="1.2" fill="#c40000"/>
+        </svg>
+      </button>
+      <span class="header-title">SOPORTE TÉCNICO</span>
+      <div class="header-spacer"></div>
+    </div>
     <p>¿Necesitas resolver una duda sobre nuestros servicios o cómo convertirte en TOTUS? Nuestro equipo de soporte técnico está listo para ayudarte.</p>
     <p>Correo: <span class="highlight">totussoportetecnico@gmail.com</span></p>
     <p>Teléfono: <span class="highlight">79462937</span></p>
