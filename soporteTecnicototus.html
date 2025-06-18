@@ -33,6 +33,10 @@
     }
     .header-arrow,
     .header-spacer {
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
       width: 44px;
       height: 36px;
       min-width: 44px;
@@ -42,6 +46,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
+      box-shadow: none;
+    }
+    .header-spacer {
+      pointer-events: none;
+      cursor: default;
     }
     .header-arrow svg,
     .header-spacer svg {
