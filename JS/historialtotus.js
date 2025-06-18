@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
   const tareas = JSON.parse(localStorage.getItem('tareasAceptadas')) || [];
   const contenedor = document.getElementById('historialTareas');
+  console.log(localStorage.getItem('tareasAceptadas'));
   if (tareas.length === 0) {
     contenedor.innerHTML = "<p>No tienes tareas aceptadas aún.</p>";
     return;
