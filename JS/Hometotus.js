@@ -127,7 +127,7 @@ document.addEventListener('click', function(e) {
               descripcion: tarea.descripcion,
               direccion: tarea.direccion,
               presupuesto: tarea.presupuesto,
-              estado: "pendiente",
+              estado: "Aceptada",
               uid: uid,
               telefono: tarea.telefono || '',
               latitud: tarea.latitud || '',
@@ -138,7 +138,7 @@ document.addEventListener('click', function(e) {
             localStorage.setItem('totusCurrentUser', JSON.stringify(usuarioActual));
           }
           // Cambia el estado en el array global y guarda en JSONBIN
-          tarea.estado = "Aceptada";
+          tarea.estado = "Pendiente";
           const JSONBIN_URL_SERVICIOS_PUT = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_SERVICIOS}`;
           fetch(JSONBIN_URL_SERVICIOS_PUT, {
             method: 'PUT',
