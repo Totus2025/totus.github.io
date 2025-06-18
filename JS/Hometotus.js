@@ -58,8 +58,8 @@ async function cargarServiciosDelUsuario() {
           ).replace(/\s+/g, '');
           return `
             <div class="task-card">
-        <span class="status" data-status="${task.estado === 'aceptada' ? 'Pendiente' : (task.estado || 'Pendiente')}">
-        ${task.estado === 'aceptada' ? 'Pendiente' : (task.estado || 'Pendiente')}
+        <span class="status" data-status="${task.estado === 'pendiente' ? 'Pendiente' : (task.estado === 'aceptada' ? 'Aceptada' : (task.estado || 'Pendiente'))}">
+  ${task.estado === 'pendiente' ? 'Pendiente' : (task.estado === 'aceptada' ? 'Aceptada' : (task.estado || 'Pendiente'))}
               </span>
               <h2>${task.categoria}</h2>
               <p><strong>Descripción:</strong> ${task.descripcion}</p>
