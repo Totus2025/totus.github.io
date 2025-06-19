@@ -24,7 +24,22 @@ document.addEventListener('DOMContentLoaded', function() {
             </a>
           </div>
         ` : ''}
-      </div>`
+       ${
+          (tarea.latitud && tarea.longitud) ? `
+            <div style="margin-bottom: 10px;">
+              <iframe
+                width="100%"
+                height="150"
+                frameborder="0"
+                style="border:0;border-radius:8px;"
+                src="https://www.google.com/maps?q=${tarea.latitud},${tarea.longitud}&hl=es&z=16&output=embed"
+                allowfullscreen>
+              </iframe>
+            </div>
+          ` : ''
+        }
+        </div>`
+      
     );
   }).join('');
 });
