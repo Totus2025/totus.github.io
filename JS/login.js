@@ -38,6 +38,13 @@ function generateUserId() {
   return 'cliente_' + Math.random().toString(36).substr(2, 9);
 }
 
+// ========== CUPÓN BIENVENIDA AGREGADO ==========
+function generateDiscount() {
+  const DESCUENTOS = [5, 10, 15, 20, 25];
+  return DESCUENTOS[Math.floor(Math.random() * DESCUENTOS.length)];
+}
+// ========== FIN CUPÓN BIENVENIDA AGREGADO ==========
+
 showRegister.addEventListener('click', () => {
   loginSection.classList.add('hidden');
   registerSection.classList.remove('hidden');
@@ -116,12 +123,16 @@ registerForm.addEventListener('submit', async (e) => {
       hideLoading(registerBtn, registerText, registerSpinner);
       return;
     }
+    // Cupón
     const newUser = {
       id: generateUserId(),
       email,
       password,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      isNew: true, // Indica que es un usuario nuevo para cupón
+      welcomeDiscount: generateDiscount() // Descuento aleatorio de bienvenida
     };
+    
     const updatedUsers = [...users, newUser];
     const saveResult = await saveUsers(updatedUsers);
     if (!saveResult) throw new Error('No se pudo guardar el usuario');
@@ -152,20 +163,32 @@ loginForm.addEventListener('submit', async (e) => {
     if (user) {
       // Mostramos el mensaje y el spinner al mismo tiempo
       showAlert(loginAlert, '¡Inicio de sesión exitoso! Redirigiendo...', true);
-
+//Cupón nuevo
       const sessionData = {
         userId: user.id,
         email: user.email,
         loggedIn: true,
         lastActivity: new Date().getTime(),
-        expiresAt: new Date().getTime() + (60 * 60 * 1000)
+        expiresAt: new Date().getTime() + (60 * 60 * 1000),
+        isNew: user.isNew || false, // Para mostrar el cupón solo a los nuevos
+        welcomeDiscount: user.welcomeDiscount || null // Guarda descuento en la sesión
       };
+      
+
       localStorage.setItem(LOCAL_STORAGE_SESSION_KEY, JSON.stringify(sessionData));
       localStorage.setItem('tipoUsuario', 'cliente');
 
       setTimeout(() => { 
         window.location.href = "index.html"; 
       }, 1500);
+
+      //cupón
+      // Marcar usuario como no nuevo en la base de datos (para que solo reciba el cupón una vez)
+      if (user.isNew) {
+        user.isNew = false;
+        await saveUsers(users);
+      }
+     
     } else {
       showAlert(loginAlert, 'Correo o contraseña incorrectos', false);
     }
