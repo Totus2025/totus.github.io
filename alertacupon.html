@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Cupón de Bienvenida</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f8f8;
+    }
+
+    #cuponModal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .cupon-content {
+      background: linear-gradient(145deg, #ff0000, #cc0000);
+      border-radius: 20px;
+      padding: 30px 20px 40px;
+      width: 340px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 0 20px #ff4d4d;
+      border: 3px dashed #fff;
+      animation: brillar 2s infinite alternate;
+      position: relative;
+    }
+
+    @keyframes brillar {
+      0% { box-shadow: 0 0 10px #ff4d4d; }
+      100% { box-shadow: 0 0 25px #ffcccc; }
+    }
+
+    .cupon-content h2 {
+      font-size: 26px;
+      margin-bottom: 10px;
+      z-index: 1;
+    }
+
+    .cupon-content p {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      z-index: 1;
+    }
+
+    .btn-cerrar {
+      background-color: #fff;
+      color: #cc0000;
+      padding: 12px 25px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      z-index: 1;
+      transition: all 0.3s;
+    }
+
+    .btn-cerrar:hover {
+      background-color: #ffe6e6;
+      transform: scale(1.05);
+    }
+
+    .btn-x {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 20px;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      background: transparent;
+      border: none;
+      z-index: 2;
+    }
+
+    .btn-x:hover {
+      color: #ffcccc;
+    }
+  </style>
+</head>
+<body>
+
+<div id="cuponModal">
+  <div class="cupon-content">
+    <button class="btn-x" onclick="cerrarCupon()">✖</button>
+    <h2>🎉 ¡Cupón de Bienvenida! 🎉</h2>
+    <p id="cuponText">15% de descuento en tu compra</p>
+    <button class="btn-cerrar" onclick="cerrarCupon()">¡Usar Cupón!</button>
+  </div>
+</div>
+
+<script>
+  const DESCUENTOS = [5, 10, 15, 20, 25];
+
+  function mostrarCupon() {
+    const yaMostrado = sessionStorage.getItem('cuponSesionMostrado');
+    if (!yaMostrado) {
+      const descuento = DESCUENTOS[Math.floor(Math.random() * DESCUENTOS.length)];
+      document.getElementById('cuponText').innerText = `${descuento}% de descuento en tu compra 🎁`;
+      document.getElementById('cuponModal').style.display = 'flex';
+      sessionStorage.setItem('cuponSesionMostrado', 'true');
+    }
+  }
+
+  function cerrarCupon() {
+    document.getElementById('cuponModal').style.display = 'none';
+  }
+
+  window.onload = mostrarCupon;
+</script>
+
+</body>
+</html>
