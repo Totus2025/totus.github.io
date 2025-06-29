@@ -274,44 +274,39 @@
 
       <label>Selecciona un cupón</label>
 
-      <div class="cupon" onclick="seleccionarSoloUno(this)">
-        <input type="checkbox" hidden />
-        <span class="checkmark">✓</span>
-        <div class="cupon-contenido">
-          <strong>10% OFF</strong>
-          <p>En tu primera compra</p>
-          <small>• Válido durante 2 horas</small>
-        </div>
-      </div>
-
-      <div class="cupon" onclick="seleccionarSoloUno(this)">
-        <input type="checkbox" hidden />
-        <span class="checkmark">✓</span>
-        <div class="cupon-contenido">
-          <strong>15% OFF</strong>
-          <p>En cualquier servicio</p>
-          <small>• Válido durante 1 día</small>
-        </div>
-      </div>
-
-      <div class="cupon" onclick="seleccionarSoloUno(this)">
-        <input type="checkbox" hidden />
-        <span class="checkmark">✓</span>
-        <div class="cupon-contenido">
-          <strong>5% OFF</strong>
-          <p>En cualquier servicio</p>
-          <small>• Válido durante 3 días</small>
-        </div>
-      </div>
-
-      <div class="cupon" onclick="seleccionarSoloUno(this)">
-        <input type="checkbox" hidden />
-        <span class="checkmark">✓</span>
-        <div class="cupon-contenido">
-          <strong>✖</strong>
-          <p>No utilizar cupón</p>
-          <small>• Continuar sin descuento</small>
-        </div>
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
+        <label class="cupon" style="cursor:pointer;align-items:center;">
+          <input type="checkbox" name="cupon" value="10% OFF" onclick="seleccionarSoloUno(this)" style="margin-right:10px;" />
+          <div class="cupon-contenido">
+            <strong>10% OFF</strong>
+            <p>En tu primera compra</p>
+            <small>• Válido durante 2 horas</small>
+          </div>
+        </label>
+        <label class="cupon" style="cursor:pointer;align-items:center;">
+          <input type="checkbox" name="cupon" value="15% OFF" onclick="seleccionarSoloUno(this)" style="margin-right:10px;" />
+          <div class="cupon-contenido">
+            <strong>15% OFF</strong>
+            <p>En cualquier servicio</p>
+            <small>• Válido durante 1 día</small>
+          </div>
+        </label>
+        <label class="cupon" style="cursor:pointer;align-items:center;">
+          <input type="checkbox" name="cupon" value="5% OFF" onclick="seleccionarSoloUno(this)" style="margin-right:10px;" />
+          <div class="cupon-contenido">
+            <strong>5% OFF</strong>
+            <p>En cualquier servicio</p>
+            <small>• Válido durante 3 días</small>
+          </div>
+        </label>
+        <label class="cupon" style="cursor:pointer;align-items:center;">
+          <input type="checkbox" name="cupon" value="Ninguno" onclick="seleccionarSoloUno(this)" style="margin-right:10px;" />
+          <div class="cupon-contenido">
+            <strong>✖</strong>
+            <p>No utilizar cupón</p>
+            <small>• Continuar sin descuento</small>
+          </div>
+        </label>
       </div>
 
       <label for="direccion">Dirección</label>

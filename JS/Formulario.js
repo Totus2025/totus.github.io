@@ -177,6 +177,12 @@ function mostrarPago() {
   }
 }
 
+function seleccionarSoloUno(checkbox) {
+  document.querySelectorAll('input[type="checkbox"][name="cupon"]').forEach(function (el) {
+    if (el !== checkbox) el.checked = false;
+  });
+}
+
 // Inicializa el estado correcto al cargar la página
 document.addEventListener('DOMContentLoaded', function() {
   if (document.getElementById('metodo-pago')) {
