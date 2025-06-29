@@ -29,16 +29,15 @@
     }
 
     footer {
-      background-color: #f8f9fa;
-      border-top: 1px solid #dee2e6;
       background-color: #fff;
-      position: fixed;  /* Fija la barra */
-            bottom: 0;       /* La coloca en la parte inferior */
-            left: 0;         /* Alineada a la izquierda */
-            width: 100%;    /* Ancho completo */
-            padding: 10px;
-            text-align: center;
-            z-index: 1000;   /* Asegura que esté por encima del resto */
+      border-top: 1px solid #dee2e6;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 10px;
+      text-align: center;
+      z-index: 1000;
     }
 
     footer .nav-item {
@@ -47,23 +46,21 @@
     }
 
     footer .nav-item a {
-      color:  #b30000; /* Cambiar el color de las letras del footer a rojo */
+      color:  #b30000;
       text-decoration: none;
     }
 
     footer .nav-item a:hover {
-      text-decoration: underline; /* Subrayado al pasar el cursor */
+      text-decoration: underline;
     }
 
     footer .nav-item i {
-      color:  #b30000; /* Cambiar el color de los íconos del footer a rojo */
+      color:  #b30000;
     }
 
-    
-      footer .nav-item.active { /*hace que el icono se haga rojita*/
-      color: #000000; 
+    footer .nav-item.active {
+      color: #000000;
       font-weight: bold;
-    
     }
 
     .avatar-container {
@@ -76,43 +73,36 @@
       width: 120px;
       height: 120px;
       border-radius: 50%;
-      object-fit: cover; /* Ajusta la imagen para que no se deforme */
+      object-fit: cover;
       border: 2px solid  #b30000;
     }
 
-    /* Quitamos el círculo blanco del ícono de la cámara */
     .avatar-upload {
       position: absolute;
       bottom: 0;
       right: 0;
-      /* background-color: #fff;  <--- Eliminado */
-      /* border-radius: 50%;      <--- Eliminado */
-      padding: 0;                /* Sin padding extra */
+      padding: 0;
       cursor: pointer;
       line-height: 1;
-      /* Opcional: Agregar un leve fondo transparente si quieres visibilidad sobre cualquier foto */
-      /* background: rgba(255,255,255,0.5); border-radius: 6px; */
     }
+
     .avatar-upload i {
       font-size: 1.7rem;
       color:  #b30000;
       background: none;
       box-shadow: none;
-      /* Opcional: agregar sombra leve si la imagen es muy clara de fondo */
-      /* text-shadow: 0 1px 2px #fff, 0 1px 6px #b3000055; */
     }
 
-    /* Estilo para los apartados del menú */
     .menu-item {
-      color:  #b30000 /* Cambiar el color de las letras de los apartados a rojo */
+      color:  #b30000;
     }
 
     .menu-item i {
-      color:  #b30000; /* Cambiar el color de los íconos de los apartados a rojo */
+      color:  #b30000;
     }
 
     .menu-item a {
-      color:  #b30000; /* Cambiar el color de los enlaces de los apartados a rojo */
+      color:  #b30000;
       text-decoration: none;
     }
 
@@ -120,15 +110,13 @@
       text-decoration: underline;
     }
 
-    /* Centrar y estilizar el título "Perfil" */
     .header h1 {
       font-size: 1.5rem;
-      margin: 20px 0; /* Espaciado superior e inferior */
-      color: #b30000; /* Rojo consistente */
+      margin: 20px 0;
+      color: #b30000;
       text-align: center;
     }
 
-    /* Estilo del modal de confirmación */
     .confirmation-modal {
       position: fixed;
       top: 50%;
@@ -141,7 +129,7 @@
       padding: 20px;
       z-index: 1050;
       text-align: center;
-      display: none; /* Oculto por defecto */
+      display: none;
     }
 
     .confirmation-modal p {
@@ -155,7 +143,7 @@
     }
 
     .confirmation-modal .btn-confirm {
-      background-color: #b30000 ;
+      background-color: #b30000;
       color: #fff;
     }
 
@@ -165,14 +153,13 @@
     }
 
     .btn-danger {
-  background-color: #b30000 !important;
-  border-color: #b30000 !important;
-}
+      background-color: #b30000 !important;
+      border-color: #b30000 !important;
+    }
   </style>
 </head>
 <body>
   <div class="container py-4">
-    <!-- Título centrado -->
     <h1 class="header" style="color: #b30000;">Perfil</h1>
 
     <!-- User Info -->
@@ -186,9 +173,8 @@
       </div>
       <h2 id="userEmail" class="h5">Sin correo</h2>
     </div>
-    <!-- hoala -->
 
-    <!-- Options -->
+    <!-- Opciones del menú -->
     <ul class="list-group mb-4">
       <li class="list-group-item d-flex align-items-center menu-item">
         <i class="bi bi-person me-3"></i>
@@ -197,6 +183,10 @@
       <li class="list-group-item d-flex align-items-center menu-item">
         <i class="bi bi-clock me-3"></i>
         <a href="PantallaTareas.html" class="text-decoration-none">Historial</a>
+      </li>
+      <li class="list-group-item d-flex align-items-center menu-item">
+        <i class="bi bi-ticket-perforated me-3"></i>
+        <a href="Cupones.html" class="text-decoration-none">Cupones</a>
       </li>
       <li class="list-group-item d-flex align-items-center menu-item">
         <i class="bi bi-question-circle me-3"></i>
@@ -208,14 +198,14 @@
       </li>
     </ul>
 
-    <!-- Button -->
+    <!-- Botón de acción -->
     <div class="text-center mb-4">
       <a href="formularioTotus.html">
-      <button class="btn btn-danger w-100">Convertirme en TOTUS</button>
+        <button class="btn btn-danger w-100">Convertirme en TOTUS</button>
       </a>
     </div>
 
-    <!-- Bottom Navigation -->
+    <!-- Footer de navegación -->
     <footer class="d-flex justify-content-around align-items-center p-3">
       <div class="nav-item">
         <a href="index.html">
@@ -225,17 +215,16 @@
       </div>
       <div class="nav-item">
         <a href="Formulario.html">
-         <!-- Ícono para redirigir al formulario -->
-         <i class="bi bi-file-plus " onclick="goToFormulario()"></i>
-        <div>Crear tareas</div>
-      </a>
+          <i class="bi bi-file-plus" onclick="goToFormulario()"></i>
+          <div>Crear tareas</div>
+        </a>
       </div>
       <div class="nav-item">
-      <a href="PantallaTareas.html">
-        <i class="bi bi-clock"></i>
-        <div>Historial</div>
-      </a>
-    </div>
+        <a href="PantallaTareas.html">
+          <i class="bi bi-clock"></i>
+          <div>Historial</div>
+        </a>
+      </div>
       <div class="nav-item active">
         <a href="perfil.html">
           <i class="bi bi-person-fill"></i>

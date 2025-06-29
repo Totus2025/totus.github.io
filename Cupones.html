@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cupones de descuento - TOTUS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      background-color: #fff;
+      padding: 1.5rem;
+      margin: 2rem auto;
+      max-width: 500px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      position: relative;
+      min-height: 440px;
+    }
+    .header-flex {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      width: 100%;
+      position: relative;
+    }
+    .header-arrow,
+    .header-spacer {
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      width: 44px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .header-spacer {
+      pointer-events: none;
+      cursor: default;
+    }
+    .header-arrow svg,
+    .header-spacer svg {
+      width: 44px;
+      height: 36px;
+      display: block;
+    }
+    .header-title {
+      flex: 1;
+      text-align: center;
+      color: #b30000;
+      font-size: 22px;
+      font-weight: 600;
+      margin: 0;
+      line-height: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    a.cupon {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 2px dashed #c40000;
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+    a.cupon:hover {
+      background-color: #fff1f1;
+    }
+    .porcentaje {
+      font-size: 24px;
+      font-weight: bold;
+      color: #c40000;
+      margin-right: 10px;
+    }
+    .descripcion {
+      font-size: 14px;
+      color: #444;
+    }
+    @media (max-width: 600px) {
+      .container {
+        margin: 1rem;
+        padding: 1.2rem;
+      }
+      .header-arrow svg {
+        width: 36px;
+        height: 28px;
+      }
+      .header-title {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header-flex">
+      <button class="header-arrow" onclick="location.href='perfil.html'" aria-label="Regresar al perfil">
+        <svg viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 6L7 14L15 22" stroke="#c40000" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="7" y="13" width="22" height="2.5" rx="1.2" fill="#c40000"/>
+        </svg>
+      </button>
+      <span class="header-title">CUPONES DE DESCUENTO</span>
+      <div class="header-spacer"></div>
+    </div>
+
+    <a href="Formulario.html" class="cupon">
+      <div class="porcentaje">25%</div>
+      <div class="descripcion">Cupón de descuento TOTUS<br>Hábil durante 2 horas.</div>
+    </a>
+
+    <a href="Formulario.htmll" class="cupon">
+      <div class="porcentaje">20%</div>
+      <div class="descripcion">Cupón de descuento TOTUS<br>Hábil durante 3 horas.</div>
+    </a>
+
+    <a href="Formulario.html" class="cupon">
+      <div class="porcentaje">15%</div>
+      <div class="descripcion">Cupón de descuento TOTUS<br>Hábil durante 1 día.</div>
+    </a>
+
+    <a href="Formulario.html" class="cupon">
+      <div class="porcentaje">10%</div>
+      <div class="descripcion">Cupón de descuento TOTUS<br>Hábil durante 2 días.</div>
+    </a>
+
+    <a href="Formulario.html" class="cupon">
+      <div class="porcentaje">5%</div>
+      <div class="descripcion">Cupón de descuento TOTUS<br>Hábil durante 3 días.</div>
+    </a>
+  </div>
+</body>
+</html>
