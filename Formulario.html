@@ -4,9 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Publicar Servicio</title>
-
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
   <style>
     * {
       box-sizing: border-box;
@@ -35,7 +33,6 @@
       position: relative;
     }
 
-    /* Header flex para flecha y título */
     .header-flex {
       display: flex;
       align-items: center;
@@ -62,7 +59,6 @@
       font-size: 24px;
       color: #c40000;
       margin: 0;
-      /* margin-bottom se gestiona desde .header-flex */
       text-align: left;
     }
 
@@ -74,23 +70,6 @@
       text-align: left;
     }
 
-    select {
-      font-size: 16px;
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: 2px solid #c40000;
-      background-color: white;
-      color: #333;
-      outline: none;
-      width: 100%;
-      margin-bottom: 20px;
-      appearance: none;
-      background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
-      background-repeat: no-repeat;
-      background-position: right 12px center;
-      background-size: 16px 16px;
-    }
-
     label {
       display: block;
       text-align: left;
@@ -99,8 +78,7 @@
       margin-top: 15px;
     }
 
-    textarea,
-    input[type="text"] {
+    select, textarea, input[type="text"] {
       width: 100%;
       padding: 10px;
       border-radius: 8px;
@@ -142,13 +120,58 @@
       margin-top: 10px;
     }
 
-    select,
-    textarea,
-    input[type="text"],
-    .small-button,
-    .publicar-btn {
-      font-size: 12px;
-      padding: 8px;
+    .cupon {
+      display: flex;
+      align-items: center;
+      background-color: #fff5f2;
+      border: 2px dashed #ff6a00;
+      padding: 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 10px;
+      position: relative;
+      transition: 0.3s;
+    }
+
+    .cupon.selected {
+      border-color: #c40000;
+      background-color: #ffeceb;
+    }
+
+    .cupon-contenido {
+      color: #c40000;
+      font-size: 13px;
+      text-align: left;
+      flex-grow: 1;
+    }
+
+    .cupon strong {
+      font-size: 18px;
+      display: block;
+    }
+
+    .cupon p {
+      margin: 2px 0;
+    }
+
+    .cupon small {
+      color: #a67a6a;
+      font-size: 11px;
+    }
+
+    /* Palomita ✓ */
+    .checkmark {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-size: 18px;
+      color: transparent;
+      transition: color 0.3s;
+      user-select: none;
+    }
+
+    .cupon.selected .checkmark {
+      color: #c40000;
     }
 
     .overlay {
@@ -204,32 +227,20 @@
 
     .dialog .btn-cancel {
       background-color: #ddd;
-      color: #111 !important; 
+      color: #111 !important;
     }
-    /* flecha y titulo*/
+
     @media (max-width: 500px) {
-      .header-flex {
-        gap: 8px;
-      }
-      h1 {
-        font-size: 18px;
-      }
-      .container {
-        padding: 18px 5px;
-      }
-      .back-button svg {
-        width: 28px !important;
-        height: 24px !important;
-      }
-      .subtitulo {
-        font-size: 12px;
-      }
+      .header-flex { gap: 8px; }
+      h1 { font-size: 18px; }
+      .container { padding: 18px 5px; }
+      .back-button svg { width: 28px !important; height: 24px !important; }
+      .subtitulo { font-size: 12px; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    
     <div class="header-flex">
       <button class="back-button" type="button" onclick="confirmBack()" aria-label="Volver">
         <svg width="36" height="28" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -251,7 +262,6 @@
       <option value="mantenimiento">Mantenimiento</option>
     </select>
 
-    <!--  Campos ocultos para IDs -->
     <input type="hidden" id="id_cliente" value="cliente123" />
     <input type="hidden" id="id_trabajador" value="" />
 
@@ -262,6 +272,48 @@
       <label for="presupuesto">Presupuesto</label>
       <input type="text" id="presupuesto" placeholder="50" value="$" />
 
+      <label>Selecciona un cupón</label>
+
+      <div class="cupon" onclick="seleccionarSoloUno(this)">
+        <input type="checkbox" hidden />
+        <span class="checkmark">✓</span>
+        <div class="cupon-contenido">
+          <strong>10% OFF</strong>
+          <p>En tu primera compra</p>
+          <small>• Válido durante 2 horas</small>
+        </div>
+      </div>
+
+      <div class="cupon" onclick="seleccionarSoloUno(this)">
+        <input type="checkbox" hidden />
+        <span class="checkmark">✓</span>
+        <div class="cupon-contenido">
+          <strong>15% OFF</strong>
+          <p>En cualquier servicio</p>
+          <small>• Válido durante 1 día</small>
+        </div>
+      </div>
+
+      <div class="cupon" onclick="seleccionarSoloUno(this)">
+        <input type="checkbox" hidden />
+        <span class="checkmark">✓</span>
+        <div class="cupon-contenido">
+          <strong>5% OFF</strong>
+          <p>En cualquier servicio</p>
+          <small>• Válido durante 3 días</small>
+        </div>
+      </div>
+
+      <div class="cupon" onclick="seleccionarSoloUno(this)">
+        <input type="checkbox" hidden />
+        <span class="checkmark">✓</span>
+        <div class="cupon-contenido">
+          <strong>✖</strong>
+          <p>No utilizar cupón</p>
+          <small>• Continuar sin descuento</small>
+        </div>
+      </div>
+
       <label for="direccion">Dirección</label>
       <input type="text" id="direccion" placeholder="Escribe tu dirección" />
 
@@ -269,10 +321,9 @@
       <input type="text" id="telefono" placeholder="Ej. 77966363" />
 
       <button class="small-button" type="button" onclick="obtenerUbicacion()">Obtener ubicación actual</button>
-
       <div id="ubicacion-actual"></div>
       <div id="mapa" style="width: 100%; height: 200px; border-radius: 12px; display: none; margin-bottom: 15px;"></div>
-      
+
       <label for="metodo-pago">Método de pago</label>
       <select id="metodo-pago" onchange="mostrarPago()">
         <option value="efectivo">Efectivo</option>
@@ -286,7 +337,6 @@
     </form>
   </div>
 
-  <!-- Confirmar para regresar -->
   <div class="overlay" id="overlay">
     <div class="dialog">
       <p>¿Estás seguro que deseas ir al inicio?</p>
@@ -296,5 +346,6 @@
   </div>
   <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
   <script src="JS/Formulario.js"></script>
+
 </body>
 </html>
