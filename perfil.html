@@ -30,39 +30,39 @@
 
     footer {
       background-color: #fff;
-      border-top: 1px solid #dee2e6;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      padding: 10px;
-      text-align: center;
-      z-index: 1000;
+      border-top: 1px solid #ccc;
+      position: fixed;  /* Fija la barra */
+            bottom: 0;       /* La coloca en la parte inferior */
+            left: 0;         /* Alineada a la izquierda */
+            width: 100%;    /* Ancho completo */
+            padding: 10px;
+            text-align: center;
+            z-index: 1000;   /* Asegura que esté por encima del resto */
     }
 
-    footer .nav-item {
+   footer .nav-item {
       text-align: center;
-      flex: 1;
+      color:#b30000; /* Cambiar el color del texto a rojo */
+      font-size: 0.9rem;
     }
 
     footer .nav-item a {
-      color:  #b30000;
+      color:#b30000; /* Cambiar el color de los enlaces a rojo */
       text-decoration: none;
     }
 
     footer .nav-item a:hover {
-      text-decoration: underline;
+      text-decoration: underline; /* Subrayado al pasar el cursor */
     }
 
     footer .nav-item i {
-      color:  #b30000;
+      color: #b30000; /* Cambiar el color de los íconos a rojo */
     }
 
-    footer .nav-item.active {
-      color: #000000;
+    footer .nav-item.active { /*hace que la casita se haga neegrita*/
+      color: #000000; 
       font-weight: bold;
     }
-
     .avatar-container {
       position: relative;
       display: inline-block;
