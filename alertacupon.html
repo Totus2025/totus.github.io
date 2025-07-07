@@ -95,13 +95,13 @@
     <button class="btn-x" onclick="cerrarCupon()">✖</button>
     <h2>🎉 ¡Cupón de Bienvenida! 🎉</h2>
     <p id="cuponText">15% de descuento en tu compra</p>
-    <button class="btn-cerrar" onclick="cerrarCupon()">¡Usar Cupón!</button>
+    <button class="btn-cerrar" onclick="usarCupon()">¡Usar Cupón!</button>
   </div>
 </div>
 
 <script>
   const DESCUENTOS = [5, 10, 15, 20, 25];
-// cupos
+
   function mostrarCupon() {
     const yaMostrado = sessionStorage.getItem('cuponSesionMostrado');
     if (!yaMostrado) {
@@ -114,6 +114,11 @@
 
   function cerrarCupon() {
     document.getElementById('cuponModal').style.display = 'none';
+  }
+
+  function usarCupon() {
+    cerrarCupon();
+    window.location.href = 'Formulario.html';
   }
 
   window.onload = mostrarCupon;
